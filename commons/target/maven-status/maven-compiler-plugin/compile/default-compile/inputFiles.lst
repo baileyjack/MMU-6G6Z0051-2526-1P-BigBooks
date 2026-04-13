@@ -1,0 +1,17 @@
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/config/DatabaseConfig.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/dao/BookDAO.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/dao/BookRowMapper.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/dao/DatabaseRowMapper.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/dao/query/JdbcQueryAdapter.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/dao/query/PreparedStatementParameterBinder.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/dao/query/QueryPort.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/model/Book.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/model/Character.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/model/Genre.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/model/modelbuilder/BookBuilder.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/model/vaidation/BookValidator.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/service/BookService.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/serviceContainer/DefaultServiceContainer.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/serviceContainer/ServiceContainer.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/util/BookUtility.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/util/DateUtility.java

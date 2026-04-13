@@ -1,0 +1,17 @@
+jbailey/stu/mmu/bigbook/commons/service/BookService.class
+jbailey/stu/mmu/bigbook/commons/util/BookUtility.class
+jbailey/stu/mmu/bigbook/commons/dao/BookRowMapper.class
+jbailey/stu/mmu/bigbook/commons/config/DatabaseConfig.class
+jbailey/stu/mmu/bigbook/commons/dao/query/QueryPort.class
+jbailey/stu/mmu/bigbook/commons/serviceContainer/ServiceContainer.class
+jbailey/stu/mmu/bigbook/commons/dao/query/PreparedStatementParameterBinder.class
+jbailey/stu/mmu/bigbook/commons/util/DateUtility.class
+jbailey/stu/mmu/bigbook/commons/serviceContainer/DefaultServiceContainer.class
+jbailey/stu/mmu/bigbook/commons/dao/BookDAO.class
+jbailey/stu/mmu/bigbook/commons/model/Character.class
+jbailey/stu/mmu/bigbook/commons/dao/query/JdbcQueryAdapter.class
+jbailey/stu/mmu/bigbook/commons/model/modelbuilder/BookBuilder.class
+jbailey/stu/mmu/bigbook/commons/model/Genre.class
+jbailey/stu/mmu/bigbook/commons/model/Book.class
+jbailey/stu/mmu/bigbook/commons/dao/DatabaseRowMapper.class
+jbailey/stu/mmu/bigbook/commons/model/vaidation/BookValidator.class

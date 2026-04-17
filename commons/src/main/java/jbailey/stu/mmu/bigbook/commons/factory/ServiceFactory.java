@@ -7,10 +7,10 @@ import jbailey.stu.mmu.bigbook.commons.service.DefaultServicePort;
 import jbailey.stu.mmu.bigbook.commons.service.ServicePort;
 
 /**
- * Factory for creating the ServicePort with its dependencies.
- * Centralizes the instantiation of the service layer components,
- * promoting clean architecture by keeping wiring logic in one place.
- * This factory ensures framework agnosticism while providing a clean API
+ * Factory which enables creating the ServicePort with its dependencies.
+ * It centralises the instantiation of service layer components,
+ * enabling clean architecture by keeping wiring logic in one place.
+ * This factory ensures frameworks can be swapped out easily while providing a usable API
  * for both manual instantiation (MVC) and DI frameworks (Spring in REST).
  */
 public class ServiceFactory {
@@ -22,6 +22,7 @@ public class ServiceFactory {
      * @return a new ServicePort implementation with all dependencies injected
      */
     public static ServicePort createServicePort() {
+        // This makes it easy to swap out any of the components in the application easily. i.e. Adding a new SerVice Factory Creator here with a different query adapter, or a different object model etc.
         return new DefaultServicePort(
             new BookService(
                 new BookDAO(

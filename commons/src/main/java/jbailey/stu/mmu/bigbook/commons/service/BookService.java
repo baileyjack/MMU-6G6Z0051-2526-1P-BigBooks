@@ -1,13 +1,13 @@
 package jbailey.stu.mmu.bigbook.commons.service;
 
 import jbailey.stu.mmu.bigbook.commons.dao.BookDAO;
-import jbailey.stu.mmu.bigbook.commons.dao.query.JdbcQueryAdapter;
 import jbailey.stu.mmu.bigbook.commons.dao.query.QueryPort;
 import jbailey.stu.mmu.bigbook.commons.model.Book;
 import jbailey.stu.mmu.bigbook.commons.model.modelbuilder.BookBuilder;
 import jbailey.stu.mmu.bigbook.commons.model.Character;
 import jbailey.stu.mmu.bigbook.commons.model.Genre;
 import jbailey.stu.mmu.bigbook.commons.util.BookUtility;
+import jbailey.stu.mmu.bigbook.commons.util.InputSanitiser;
 import jbailey.stu.mmu.bigbook.commons.model.vaidation.BookValidator;
 
 import java.util.List;
@@ -16,7 +16,8 @@ import java.util.Objects;
 /**
  * Facade for book operations using {@link BookDAO}.
  * This class required explicit injection of the {@link BookDAO} with a given {@link QueryPort} to ensure
- * no hidden dependencies and to support testing via alternative adapters.
+ * no hidden dependencies and to support testing via other adapters.
+ * Uses constructor injection, allowing manual instantiation and implementation with any DI framework like Spring.
  */
 public class BookService {
 
@@ -24,7 +25,6 @@ public class BookService {
 
     /**
      * Constructor for the service with {@link BookDAO} injection.
-     * Creates the default {@link BookDAO}
      * @param bookDAO the data access object
      */
     public BookService(BookDAO bookDAO) {
@@ -45,6 +45,14 @@ public class BookService {
 
     public void addBook(String title, String author, String date,
                         String genresString, String charactersString, String synopsis) {
+        // Sanitsze inputs to prevent XSS and injection because we llike to be properly 'enterprise' :)
+        title = InputSanitiser.sanitiseString(title);
+        author = InputSanitiser.sanitiseString(author);
+        date = InputSanitiser.sanitiseString(date);
+        genresString = InputSanitiser.sanitiseString(genresString);
+        charactersString = InputSanitiser.sanitiseString(charactersString);
+        synopsis = InputSanitiser.sanitiseString(synopsis);
+
         assertValidBookData(title, author, date, synopsis);
         bookDAO.insertBook(buildBook(0, title, author, date, genresString, charactersString, synopsis));
     }
@@ -67,6 +75,14 @@ public class BookService {
 
     public void updateBook(int id, String title, String author, String date,
                            String genresString, String charactersString, String synopsis) {
+        // Sanitise with OWASP as already explained in addBook
+        title = InputSanitiser.sanitiseString(title);
+        author = InputSanitiser.sanitiseString(author);
+        date = InputSanitiser.sanitiseString(date);
+        genresString = InputSanitiser.sanitiseString(genresString);
+        charactersString = InputSanitiser.sanitiseString(charactersString);
+        synopsis = InputSanitiser.sanitiseString(synopsis);
+
         assertValidBookData(title, author, date, synopsis);
         bookDAO.updateBook(buildBook(id, title, author, date, genresString, charactersString, synopsis));
     }
@@ -91,6 +107,30 @@ public class BookService {
         return BookUtility.serialiseCharacterString(characters);
     }
 
+    /**
+     * Retrieves paginated book summaries for a more efficient REST API list retrieval.
+     * Summaries include only an id, title, author, date to reduce data transfer.
+     *
+     * @param page is the page number (0-based because software engineers like starting at 0).
+     * @param pageSize represents the number of summaries to display per page.
+     * @return a List of Book objects with summary fields only.
+     */
+    public List<Book> getPaginatedBookSummaries(int page, int pageSize) {
+        return bookDAO.getPaginatedBookSummariesList(page, pageSize);
+    }
+
+    /**
+     * Searches books and returns paginated summaries for efficient REST API searching.
+     *
+     * @param searchString as the full search term.
+     * @param page is trhe page number
+     * @param pageSize is the number of summaries to display per page.
+     * @return a list of Book objects with summary fields.
+     */
+    public List<Book> searchBookSummariesPaginated(String searchString, int page, int pageSize) {
+        return bookDAO.getPaginatedBookSummarySearchResults(searchString, page, pageSize);
+    }
+
     private Book buildBook(int id, String title, String author, String date,
                            String genresString, String charactersString, String synopsis) {
         return new BookBuilder()
@@ -98,7 +138,6 @@ public class BookService {
                 .title(title)
                 .author(author)
                 .date(date)
-                // Parse during build as the builder is used in the service layer where the String representations of genres and characters come from form data. This keeps logic encapsulated within the service layer and allows the builder to be used with raw data and already parsed lists.
                 .genres(BookUtility.parseGenreString(genresString))
                 .characters(BookUtility.parseCharacterString(charactersString))
                 .synopsis(synopsis)

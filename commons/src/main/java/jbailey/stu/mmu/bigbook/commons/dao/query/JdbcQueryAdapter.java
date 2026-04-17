@@ -156,4 +156,3 @@ public class JdbcQueryAdapter implements QueryPort {
         return results;
     }
 }
-

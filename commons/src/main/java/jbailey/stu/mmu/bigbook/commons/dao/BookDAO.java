@@ -11,8 +11,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Data Access Object for managing Book entities in the DB.
- * Uses the QueryPort for generic query execution.
+ * Data Access Object for managing {@link Book} entities in the DB.
+ * Uses the {@link QueryPort} for generic query execution.
+ * Uses constructor injection for frameworks, allowing use in manual instantiation and DI such as Spring.
  */
 @Slf4j
 public class BookDAO {
@@ -21,14 +22,16 @@ public class BookDAO {
     private static final String BOOK_COLUMNS = "id, title, author, date, genres, characters, synopsis"; // easy to add columns
     private static final String BOOK_SELECT_STATEMENT = "SELECT " + BOOK_COLUMNS + " FROM books";
 
+    // Rows and Summary Rows for REST are different. MVC gets full rows all the time, REST uses summaries as it is client facing and should use the DB less as more traffic would use this in a real-world application / deployment
     private final DatabaseRowMapper<Book> rowMapper = new BookRowMapper();
+    private final DatabaseRowMapper<Book> summaryRowMapper = new BookSummaryRowMapper();
     private final QueryPort queryPort;
 
     /**
-     * Constructor requiring QueryPort which makes callers explicit about which query adapter to use.
+     * Constructor requiring {@link QueryPort} which makes callers explicit about which query adapter to use.
      * This prevents hidden dependencies and allows flexibility in data access strategies.
      *
-     * @param queryPort is a required {@link QueryPort} the data access port implementation
+     * @param queryPort is a required {@link QueryPort} as the data access port implementation
      */
     public BookDAO(QueryPort queryPort) {
         this.queryPort = Objects.requireNonNull(queryPort, "queryPort cannot be null");
@@ -170,6 +173,54 @@ public class BookDAO {
         } catch (SQLException sqlException) {
             log.error("Error getting search book count: {}", sqlException.getMessage(), sqlException);
             return 0;
+        }
+    }
+
+    /**
+     * Retrieves a paginated list of book summaries (id, title, author, date)
+     * for efficient views in REST, reducing data transfer and query time.
+     *
+     * @param page is the page number starting from 0
+     * @param pageSize is the total number of summaries to show per page.
+     * @return is a {@code List} of {@link Book} objects with only summary fields populated.
+     */
+    public List<Book> getPaginatedBookSummariesList(int page, int pageSize) {
+        String summaryColumns = "id, title, author, date";
+        String query = "SELECT " + summaryColumns + " FROM books ORDER BY id ASC LIMIT ? OFFSET ?";
+        try {
+            return queryPort.queryList(query, statement -> {
+                statement.setInt(1, pageSize);
+                statement.setInt(2, page * pageSize);
+            }, summaryRowMapper);
+        } catch (SQLException sqlException) {
+            log.error("Error fetching paginated book summaries: {}", sqlException.getMessage(), sqlException);
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Applies searching with pagination for books and returns summaries
+     * for efficient search results in REST API.
+     *
+     * @param searchStr the search term for title or author.
+     * @param page the page number (0-based).
+     * @param pageSize the number of summaries per page.
+     * @return {@code List} of {@link Book} objects with only summary fields populated.
+     */
+    public List<Book> getPaginatedBookSummarySearchResults(String searchStr, int page, int pageSize) {
+        String summaryColumns = "id, title, author, date";
+        String query = "SELECT " + summaryColumns + " FROM books WHERE title LIKE ? OR author LIKE ? ORDER BY id ASC LIMIT ? OFFSET ?";
+        String likeStr = "%" + searchStr + "%";
+        try {
+            return queryPort.queryList(query, statement -> {
+                statement.setString(1, likeStr);
+                statement.setString(2, likeStr);
+                statement.setInt(3, pageSize);
+                statement.setInt(4, page * pageSize);
+            }, summaryRowMapper);
+        } catch (SQLException sqlException) {
+            log.error("Error searching book summaries paginated: {}", sqlException.getMessage(), sqlException);
+            return new ArrayList<>();
         }
     }
 }

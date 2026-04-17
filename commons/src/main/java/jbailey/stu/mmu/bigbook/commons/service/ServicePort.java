@@ -1,6 +1,4 @@
-package jbailey.stu.mmu.bigbook.commons.serviceContainer;
-
-import jbailey.stu.mmu.bigbook.commons.service.BookService;
+package jbailey.stu.mmu.bigbook.commons.service;
 
 /**
  * Outbound port for dependency injection for services.
@@ -8,7 +6,7 @@ import jbailey.stu.mmu.bigbook.commons.service.BookService;
  * services. This allows concrete implementations to be changed or swapped entirely
  * without changing consumer code. This is Dependency Inversion Principle.
  */
-public interface ServiceContainer {
+public interface ServicePort {
     BookService getBookService();
 }
 

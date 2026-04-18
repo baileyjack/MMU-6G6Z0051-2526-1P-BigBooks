@@ -1,5 +1,6 @@
 package jbailey.stu.mmu.bigbook.rest.controller;
 
+import jbailey.stu.mmu.bigbook.commons.dao.BookDAO;
 import jbailey.stu.mmu.bigbook.commons.model.Book;
 import jbailey.stu.mmu.bigbook.commons.service.BookService;
 import jbailey.stu.mmu.bigbook.commons.service.ServicePort;
@@ -23,29 +24,29 @@ import java.util.List;
 // todo: SORT THIS MESS OUT PLEASE
 
 /**
- * Resource Handler for the Book REST API endpoint /books.
+ * Resource Handler for the {@link Book} REST API endpoint /books.
  * 
  * This servlet implements a RESTful API for managing book entities, adhering to REST principles
  * such as statelessness, uniform interface, and resource-based URLs. It handles CRUD operations
  * by mapping HTTP methods directly to business logic actions.
  * 
  * Key Features:
- * - Content Negotiation: Supports JSON, XML, and plain text responses based on Accept header.
+ * - Content Negotiation: Supports JSON, XML, and plain text responses based on {@code Accept} header.
  * - Error Handling: Provides consistent error responses with appropriate HTTP status codes.
  * - Input Validation: Leverages service-layer validation to ensure data integrity.
  * - Security: Enforces HTTPS and input sanitization to mitigate common vulnerabilities.
  * 
  * Architectural Role:
  * - Acts as the presentation layer for the REST API, translating HTTP requests to service calls.
- * - Uses DTOs (Data Transfer Objects) to decouple API contracts from internal domain models,
+ * - Uses {@link BookDTO}s (Data Transfer Objects) to decouple API contracts from internal domain models,
  *   allowing for API versioning and format flexibility without affecting business logic.
- * - Delegates to BookService for business rules, maintaining separation of concerns.
+ * - Delegates to {@link BookService} for business rules, maintaining separation of concerns.
  * 
  * Separation of Concerns:
  * - HTTP protocol handling and request/response management (this servlet).
- * - Business logic and validation (BookService in commons).
- * - Data persistence and querying (BookDAO in commons).
- * - Serialization and format negotiation (ResponseSerializer and RESTFormatNegotiator).
+ * - Business logic and validation ({@link BookService} in commons).
+ * - Data persistence and querying ({@link BookDAO} in commons).
+ * - Serialization and format negotiation ({@link ResponseSerializer} and {@link RESTFormatNegotiator}).
  * 
  * Framework Agnosticism:
  * - No Spring annotations; dependencies injected via constructor to keep the adapter layer
@@ -337,7 +338,7 @@ public class BookResource extends HttpServlet {
         RESTFormatNegotiator.ResponseFormat format = RESTFormatNegotiator.negotiateFormat(acceptHeader);
         ResponseSerializer<Object> serializer = RESTFormatNegotiator.getSerializer(format);
         
-        String body = serializer.serialize((RestResponse<Object>) restResponse);
+        String body = serializer.serialise((RestResponse<Object>) restResponse);
         response.setContentType(format.getMimeType() + ";charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setStatus(restResponse.getStatus());

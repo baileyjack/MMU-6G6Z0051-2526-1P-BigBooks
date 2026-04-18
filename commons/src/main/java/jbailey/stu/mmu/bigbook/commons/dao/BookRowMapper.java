@@ -12,20 +12,20 @@ import java.util.List;
 
 /**
  * Concrete implementation for mapping a {@link ResultSet} row to a {@link Book} object.
- * This strategy is an implemetnation of the {@link DatabaseRowMapper} and uses the
- * {@link BookBuilder} internally to construct {@code Book} objects step-by-step.
+ * This strategy is an implementation of the {@link DatabaseRowMapper} and uses the
+ * {@link BookBuilder} internally to construct {@link Book} objects step-by-step.
  * This class keeps mapping logic in one place, so if the database schema changes,
- * only this class and Builder need to be updated.
+ * only this class and {@link BookBuilder} need to be updated.
  */
 public class BookRowMapper implements DatabaseRowMapper<Book> {
 
     /**
-     * Maps current row of the ResultSet to a constructed {@code Book} object.
-     * {@code Genre}s and {@code Character}s are built from the comma-separated database
+     * Maps current row of the {@link ResultSet} to a constructed {@link Book} object.
+     * {@link Genre}s and {@link Character}s are built from the comma-separated database
      * entries, with the {@link BookUtility}.
      *
-     * @param currentResultSet which is the ResultSet positioned on the current row.
-     * @return A Book object built via BookBuilder.
+     * @param currentResultSet which is the {@link ResultSet} positioned on the current row.
+     * @return A {@link Book} object built via {@link BookBuilder}.
      * @throws SQLException if a database issue occurs.
      */
     @Override
@@ -51,4 +51,3 @@ public class BookRowMapper implements DatabaseRowMapper<Book> {
                 .build();
     }
 }
-

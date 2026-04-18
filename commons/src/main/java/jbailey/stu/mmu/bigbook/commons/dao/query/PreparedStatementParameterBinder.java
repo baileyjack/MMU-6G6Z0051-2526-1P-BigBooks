@@ -8,6 +8,11 @@ import java.sql.SQLException;
  */
 @FunctionalInterface
 public interface PreparedStatementParameterBinder {
+    /**
+     * Binds parameters to a {@link PreparedStatement}.
+     *
+     * @param statement the {@link PreparedStatement} to bind parameters to
+     * @throws SQLException if a database access error occurs
+     */
     void bind(PreparedStatement statement) throws SQLException;
 }
-

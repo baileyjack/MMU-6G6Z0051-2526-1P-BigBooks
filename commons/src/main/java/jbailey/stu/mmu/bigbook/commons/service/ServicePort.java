@@ -7,6 +7,8 @@ package jbailey.stu.mmu.bigbook.commons.service;
  * without changing consumer code. This is Dependency Inversion Principle.
  */
 public interface ServicePort {
+    /**
+     * @return an instance of {@link BookService}
+     */
     BookService getBookService();
 }
-

@@ -9,7 +9,7 @@
 
     <!-- Context listener to initialize ServicePort on application startup -->
     <listener>
-        <listener-class>jbailey.stu.mmu.bigbook.commons.initialization.ApplicationInitializer</listener-class>
+        <listener-class>jbailey.stu.mmu.bigbook.commons.initialization.ApplicationInitialiser</listener-class>
     </listener>
 
 </web-app>

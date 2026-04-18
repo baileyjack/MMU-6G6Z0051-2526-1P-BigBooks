@@ -5,7 +5,7 @@ import jbailey.stu.mmu.bigbook.rest.model.RestResponse;
 /**
  * Interface for response serializers.
  * 
- * Defines a contract for serializing and deserializing RestResponse objects
+ * Defines a contract for serializing and deserializing {@link RestResponse} objects
  * to different formats (JSON, XML, TEXT). This allows the REST controller
  * to be format-agnostic and support multiple output formats.
  * 
@@ -14,20 +14,19 @@ import jbailey.stu.mmu.bigbook.rest.model.RestResponse;
 public interface ResponseSerializer<T> {
     
     /**
-     * Serialize a RestResponse to a string in a specific format.
+     * Serialize a {@link RestResponse} to a {@code String} in a specific format.
      * 
-     * @param response The RestResponse to serialize.
-     * @return A string representation in the target format.
+     * @param response The {@link RestResponse} to serialize.
+     * @return A {@code String} representation in the target format.
      */
-    String serialize(RestResponse<T> response);
+    String serialise(RestResponse<T> response);
     
     /**
-     * Deserialize a string to an object of the specified type.
+     * Deserialize a {@code String} to an object of the specified type.
      * 
-     * @param data The string data to deserialize.
+     * @param data The {@code String} data to deserialize.
      * @param clazz The target class type.
-     * @return An object of type U.
+     * @return A generic object of type {@code U}.
      */
     <U> U deserialize(String data, Class<U> clazz);
 }
-

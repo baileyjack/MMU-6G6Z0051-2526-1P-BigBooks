@@ -1,5 +1,6 @@
 package jbailey.stu.mmu.bigbook.rest;
 
+import jakarta.servlet.http.HttpServlet;
 import jbailey.stu.mmu.bigbook.commons.dao.BookDAO;
 import jbailey.stu.mmu.bigbook.commons.dao.query.JdbcQueryAdapter;
 import jbailey.stu.mmu.bigbook.commons.dao.query.QueryPort;
@@ -14,9 +15,9 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * Main application entrypoint for the REST API.
- * Bootstraps the Spring Boot application with embedded Tomcat,
- * and registers the HttpServlet manually for deployment as a Spring JAR.
- * Uses Spring for DI to wire commons components with frameworks agnostically.
+ * Bootstraps the {@link SpringApplication Spring Boot} application with embedded Tomcat,
+ * and registers the {@link HttpServlet} manually for deployment as a Spring JAR.
+ * Uses Spring for DI to wire commons components framework agnostically.
  */
 @SpringBootApplication
 public class BigBookAPI {
@@ -28,7 +29,7 @@ public class BigBookAPI {
     /**
      * Bean for JDBC Query Adapter.
      *
-     * @return QueryPort implementation
+     * @return {@link QueryPort} implementation
      */
     @Bean
     public QueryPort queryPort() {
@@ -36,10 +37,10 @@ public class BigBookAPI {
     }
 
     /**
-     * Bean for BookDAO, injected with QueryPort.
+     * Bean for {@link BookDAO}, injected with {@link QueryPort}.
      *
-     * @param queryPort the query port
-     * @return BookDAO instance
+     * @param queryPort the {@link QueryPort}
+     * @return {@link BookDAO} instance
      */
     @Bean
     public BookDAO bookDAO(QueryPort queryPort) {
@@ -47,10 +48,10 @@ public class BigBookAPI {
     }
 
     /**
-     * Bean for BookService, injected with BookDAO.
+     * Bean for {@link BookService}, injected with {@link BookDAO}.
      *
      * @param bookDAO the data access object
-     * @return BookService instance
+     * @return {@link BookService} instance
      */
     @Bean
     public BookService bookService(BookDAO bookDAO) {
@@ -58,11 +59,11 @@ public class BigBookAPI {
     }
 
     /**
-     * Bean to provide ServicePort instance for dependency injection.
-     * Uses Spring-managed BookService.
+     * Bean to provide {@link ServicePort} instance for dependency injection.
+     * Uses Spring-managed {@link BookService}.
      *
-     * @param bookService the book service
-     * @return ServicePort implementation
+     * @param bookService the {@link BookService}
+     * @return {@link ServicePort} implementation
      */
     @Bean
     public ServicePort servicePort(BookService bookService) {
@@ -70,11 +71,11 @@ public class BigBookAPI {
     }
 
     /**
-     * Registers the BookResource servlet manually.
-     * Maps URLs starting with /books/* to the BookResource servlet.
+     * Registers the {@link BookResource} servlet manually.
+     * Maps URLs starting with {@code /books/*} to the {@link BookResource} servlet.
      *
-     * @param servicePort the service port
-     * @return ServletRegistrationBean for BookResource
+     * @param servicePort the {@link ServicePort}
+     * @return {@link ServletRegistrationBean} for {@link BookResource}
      */
     @Bean
     public ServletRegistrationBean<BookResource> bookResourceServlet(ServicePort servicePort) {

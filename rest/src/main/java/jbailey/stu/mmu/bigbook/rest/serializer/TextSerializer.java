@@ -25,7 +25,7 @@ public class TextSerializer<T> implements ResponseSerializer<T> {
      * @return Plain text representation.
      */
     @Override
-    public String serialize(RestResponse<T> response) {
+    public String serialise(RestResponse<T> response) {
         StringBuilder sb = new StringBuilder();
         
         // Add status and message.

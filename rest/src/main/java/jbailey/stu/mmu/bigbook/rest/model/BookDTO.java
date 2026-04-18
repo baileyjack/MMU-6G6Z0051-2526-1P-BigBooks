@@ -1,5 +1,6 @@
 package jbailey.stu.mmu.bigbook.rest.model;
 
+import jbailey.stu.mmu.bigbook.commons.model.Book;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,14 +10,14 @@ import java.util.List;
 // todo: move this / explain in the write-up so I can delete it from here :)
 
 /**
- * Data Transfer Object (DTO) for Book entities in the REST API.
+ * Data Transfer Object (DTO) for {@link Book} entities in the REST API.
  *
  * The DTO is used as a pattern to transfer data between layers and systems,
- * in the context of the REST service, it matches the Book object and serves to decouple the domain model from commons.
+ * in the context of the REST service, it matches the {@link Book} object and serves to decouple the domain model from commons.
  * This prevents exposing internal model details (e.g., implementation-specific fields) which isn't necessarily important in this
  * application but in a more complex, enterprise level application it would allow API versioning or format changes without affecting the domain.
  *
- * It mirrors the Book domain model but can be customized for API needs,
+ * It mirrors the {@link Book} domain model but can be customized for API needs,
  * such as excluding sensitive fields or adding computed properties where required. It allows API extensibility without changing the core model
  */
 @Data

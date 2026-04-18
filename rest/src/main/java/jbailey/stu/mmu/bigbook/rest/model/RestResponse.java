@@ -10,11 +10,11 @@ import jakarta.xml.bind.annotation.XmlRootElement;
  * Standard REST API response wrapper.
  * 
  * All REST API responses follow this structure:
- * {
+ * {@code {
  *   "status": 200,
  *   "message": "Success",
  *   "data": { ... }
- * }
+ * }}
  * 
  * This ensures consistent response format across all endpoints and makes client-side
  * parsing predictable and straightforward.
@@ -29,4 +29,3 @@ public class RestResponse<T> {
     private String message;
     private T data;
 }
-

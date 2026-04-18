@@ -33,7 +33,7 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- Jakarta XML Binding (JAXB) for XML serialization/deserialization -->
+        <!-- Jakarta XML Binding (JAXB) for XML serialisation/deserialisation -->
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>

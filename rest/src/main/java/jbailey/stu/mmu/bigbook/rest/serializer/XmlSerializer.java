@@ -30,7 +30,7 @@ public class XmlSerializer<T> implements ResponseSerializer<T> {
      * @return XML string representation.
      */
     @Override
-    public String serialize(RestResponse<T> response) {
+    public String serialise(RestResponse<T> response) {
         try {
             // Create a JAXB context for the RestResponse class.
             JAXBContext context = JAXBContext.newInstance(RestResponse.class);
@@ -45,8 +45,8 @@ public class XmlSerializer<T> implements ResponseSerializer<T> {
             
             return stringWriter.toString();
         } catch (JAXBException jaxbException) {
-            log.error("Error serializing to XML", jaxbException);
-            throw new RuntimeException("Failed to serialize to XML", jaxbException);
+            log.error("Error serialising to XML", jaxbException);
+            throw new RuntimeException("Failed to serialise to XML", jaxbException);
         }
     }
 

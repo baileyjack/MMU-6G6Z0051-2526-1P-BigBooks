@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  * The sanitisation here involves cleansing user input by removing or escaping
  * harmful content while preserving valid data integrity. This is an important layer in
  * an enterprise application to protect against malicious input.
- * OWASP AntiSamy is used for robust HTML sanitisation.
+ * OWASP's {@link AntiSamy} is used for robust HTML sanitisation.
  */
 public class InputSanitiser {
 
@@ -32,10 +32,10 @@ public class InputSanitiser {
     }
 
     /**
-     * Sanitises a string by trimming whitespace and using AntiSamy for HTML.
+     * Sanitises a {@code String} by trimming whitespace and using {@link AntiSamy} for HTML.
      * This prevents Cross Site Scripting by stripping malicious HTML/script content while allowing safe HTML.
-     * @param valueToSanitise is the raw input string
-     * @return sanitised string, or null if the input is null
+     * @param valueToSanitise is the raw input {@code String}
+     * @return sanitised {@code String}, or {@code null} if the input is {@code null}
      */
     public static String sanitiseString(String valueToSanitise) {
         if (valueToSanitise == null) {
@@ -57,10 +57,10 @@ public class InputSanitiser {
     }
 
     /**
-     * Sanitszes an array of strings by applying sanitisation policies to each element.
-     * This is especially useful for lists like genres or characters.
-     * @param inputArray is the array of raw strings
-     * @return an array of sanitised strings
+     * Sanitises an array of {@code String}s by applying sanitisation policies to each element.
+     * This is especially useful for {@code List}s like genres or characters.
+     * @param inputArray is the array of raw {@code String}s
+     * @return an array of sanitised {@code String}s
      */
     public static String[] sanitiseStringArray(String[] inputArray) {
         if (inputArray == null) {

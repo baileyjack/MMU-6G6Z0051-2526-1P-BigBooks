@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Convert between Book objects and REST API Book DTOs.
+ * Convert between {@link Book} objects and REST API {@link BookDTO}s.
  * Mapping is necessary to separate API contracts from domain models.
  * This class does this transformation, including converting objects
  * like {@code List<Genre>} to API-friendly formats {@code List<String>}
@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 public class BookMapper {
 
     /**
-     * Converts a Book to a BookDTO for API responses.
+     * Converts a {@link Book} to a {@link BookDTO} for API responses.
      *
-     * @param book is the Book object to be converted
-     * @return a BookDTO
+     * @param book is the {@link Book} object to be converted
+     * @return a {@link BookDTO}
      */
     public static BookDTO toDTO(Book book) {
         if (book == null) {
@@ -38,10 +38,10 @@ public class BookMapper {
     }
 
     /**
-     * Converts a BookDTO from requests to a Book object.
+     * Converts a {@link BookDTO} from requests to a {@link Book} object.
      *
-     * @param dto is the BookDTO to convert
-     * @return a Book object
+     * @param dto is the {@link BookDTO} to convert
+     * @return a {@link Book} object
      */
     public static Book fromDTO(BookDTO dto) {
         if (dto == null) {
@@ -59,10 +59,10 @@ public class BookMapper {
     }
 
     /**
-     * Converts a list of Books to a list of BookDTOs.
+     * Converts a {@code List} of {@link Book}s to a {@code List} of {@link BookDTO}s.
      *
-     * @param books is the List of Books
-     * @return a list of BookDTO objects
+     * @param books is the {@code List} of {@link Book}s
+     * @return a {@code List} of {@link BookDTO} objects
      */
     public static List<BookDTO> toDTOList(List<Book> books) {
         if (books == null) {

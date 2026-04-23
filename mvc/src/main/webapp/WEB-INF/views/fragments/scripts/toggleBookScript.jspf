@@ -1,0 +1,12 @@
+<script>
+    // Shared behavior for expanding/collapsing the reusable book card component.
+    function toggleBook(header) {
+        header.classList.toggle('expanded');
+        const details = header.nextElementSibling;
+        details.classList.toggle('show');
+        const icon = header.querySelector('.expand-icon');
+        icon.classList.toggle('expanded');
+    }
+</script>
+
+

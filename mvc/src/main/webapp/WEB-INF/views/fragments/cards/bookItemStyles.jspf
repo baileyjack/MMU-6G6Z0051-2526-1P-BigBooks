@@ -1,0 +1,134 @@
+.book-item {
+	background-color: var(--bg-color);
+	border: 1px solid var(--border-color);
+	margin-bottom: 10px;
+	border-radius: 4px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.book-item.invalid-date {
+	border-color: var(--accent-color);
+	box-shadow: 0 2px 6px rgba(231, 76, 60, 0.12);
+}
+
+.book-header {
+	padding: 15px;
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: var(--light-bg);
+	border-bottom: 1px solid var(--border-color);
+	transition: background-color 0.3s;
+}
+
+.book-header:hover,
+.book-header.expanded {
+	background-color: #e8f5e9;
+}
+
+.book-title-author {
+	flex: 1;
+}
+
+.book-title {
+	font-weight: bold;
+	font-size: 16px;
+	color: var(--text-color);
+	margin-bottom: 5px;
+}
+
+.book-author {
+	color: #666;
+	font-size: 14px;
+}
+
+.expand-icon {
+	width: 30px;
+	height: 30px;
+	background-color: var(--primary-color);
+	color: white;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: bold;
+	transition: transform 0.3s;
+}
+
+.expand-icon.expanded {
+	transform: rotate(180deg);
+}
+
+.book-details {
+	display: none;
+	padding: 20px;
+	background-color: var(--light-bg);
+	border-top: 1px solid var(--border-color);
+}
+
+.book-details.show {
+	display: block;
+}
+
+.detail-row {
+	margin-bottom: 15px;
+}
+
+.detail-label {
+	font-weight: bold;
+	color: var(--primary-color);
+	margin-bottom: 5px;
+	font-size: 14px;
+}
+
+.detail-value {
+	color: var(--text-color);
+	line-height: 1.6;
+	margin-left: 10px;
+	word-wrap: break-word;
+}
+
+.pill {
+	display: inline-block;
+	background-color: var(--light-bg);
+	color: var(--text-color);
+	border: 1px solid var(--border-color);
+	padding: 4px 8px;
+	margin: 2px 4px 2px 0;
+	border-radius: 999px;
+	font-size: 12px;
+}
+
+.book-actions {
+	display: flex;
+	gap: 10px;
+	margin-top: 15px;
+}
+
+.book-actions a {
+	padding: 8px 15px;
+	text-decoration: none;
+	border-radius: 4px;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.book-actions .edit {
+	background-color: var(--primary-color);
+	color: white;
+}
+
+.book-actions .edit:hover {
+	background-color: var(--secondary-color);
+}
+
+.book-actions .delete {
+	background-color: var(--accent-color);
+	color: white;
+}
+
+.book-actions .delete:hover {
+	background-color: #da190b;
+}
+

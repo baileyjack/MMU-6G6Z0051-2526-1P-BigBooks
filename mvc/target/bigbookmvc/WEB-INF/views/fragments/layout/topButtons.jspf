@@ -1,0 +1,18 @@
+<%
+    // Generic top-right link bar used by multiple JSP views.
+    String primaryButtonLabel = (String) request.getAttribute("primaryButtonLabel");
+    String primaryButtonPath = (String) request.getAttribute("primaryButtonPath");
+    String secondaryButtonLabel = (String) request.getAttribute("secondaryButtonLabel");
+    String secondaryButtonPath = (String) request.getAttribute("secondaryButtonPath");
+%>
+<div class="top-buttons">
+    <% if (primaryButtonPath != null && primaryButtonLabel != null) { %>
+    <a href="<%= request.getContextPath() + primaryButtonPath %>"><%= primaryButtonLabel %></a>
+    <% } %>
+
+    <% if (secondaryButtonPath != null && secondaryButtonLabel != null) { %>
+    <a href="<%= request.getContextPath() + secondaryButtonPath %>"><%= secondaryButtonLabel %></a>
+    <% } %>
+</div>
+
+

@@ -1,0 +1,5 @@
+<div class="menu">
+    <a href="<%= request.getContextPath() %>/bigbookmvc/books">View All Books</a>
+    <a href="<%= request.getContextPath() %>/bigbookmvc/books/new">Add New Book</a>
+</div>
+

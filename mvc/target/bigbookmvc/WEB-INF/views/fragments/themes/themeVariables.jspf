@@ -1,0 +1,23 @@
+:root {
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --primary-color: #4a90e2;
+    --secondary-color: #9b59b6;
+    --accent-color: #e74c3c;
+    --light-bg: #f8f9fa;
+    --border-color: #ddd;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #1a1a1a;
+        --text-color: #e0e0e0;
+        --primary-color: #5dade2;
+        --secondary-color: #bb8fce;
+        --accent-color: #ec7063;
+        --light-bg: #2c2c2c;
+        --border-color: #555;
+    }
+}
+
+

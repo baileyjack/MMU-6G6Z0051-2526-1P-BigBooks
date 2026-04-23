@@ -1,0 +1,16 @@
+.recent-books {
+    margin: 20px 0;
+    width: 100%;
+    max-width: 900px;
+    text-align: left;
+}
+
+.no-books {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    background-color: var(--bg-color);
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+

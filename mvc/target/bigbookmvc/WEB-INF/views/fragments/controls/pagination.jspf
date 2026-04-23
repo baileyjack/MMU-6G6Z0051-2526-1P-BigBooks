@@ -1,0 +1,57 @@
+<%
+	Integer paginationCurrentPageAttr = (Integer) request.getAttribute("currentPage");
+	Integer paginationTotalPagesAttr = (Integer) request.getAttribute("totalPages");
+	Integer paginationPageSizeAttr = (Integer) request.getAttribute("pageSize");
+
+	int paginationCurrentPage = paginationCurrentPageAttr != null ? paginationCurrentPageAttr : 0;
+	int paginationTotalPages = paginationTotalPagesAttr != null ? paginationTotalPagesAttr : 0;
+	int paginationPageSize = paginationPageSizeAttr != null ? paginationPageSizeAttr : 10;
+
+	String paginationBasePath = (String) request.getAttribute("paginationBasePath");
+	if (paginationBasePath == null || paginationBasePath.isEmpty()) {
+		paginationBasePath = "/bigbookmvc/books";
+	}
+
+	String paginationQueryPrefix = (String) request.getAttribute("paginationQueryPrefix");
+	String paginationQueryJoin = (paginationQueryPrefix != null && !paginationQueryPrefix.isEmpty())
+			? paginationQueryPrefix + "&"
+			: "";
+%>
+<div class="pagination">
+	<%
+		if (paginationTotalPages > 1) {
+			if (paginationCurrentPage > 0) {
+	%>
+	<a href="<%= request.getContextPath() %><%= paginationBasePath %>?<%= paginationQueryJoin %>page=<%= paginationCurrentPage - 1 %>&pageSize=<%= paginationPageSize %>">&laquo; Prev</a>
+	<%
+			}
+
+			int maxPageLinks = 10;
+			int start = Math.max(0, paginationCurrentPage - (maxPageLinks / 2));
+			int end = Math.min(paginationTotalPages - 1, start + maxPageLinks - 1);
+			if ((end - start + 1) < maxPageLinks) {
+				start = Math.max(0, end - maxPageLinks + 1);
+			}
+
+			for (int i = start; i <= end; i++) {
+				if (i == paginationCurrentPage) {
+	%>
+	<span class="current"><%= i + 1 %></span>
+	<%
+				} else {
+	%>
+	<a href="<%= request.getContextPath() %><%= paginationBasePath %>?<%= paginationQueryJoin %>page=<%= i %>&pageSize=<%= paginationPageSize %>"><%= i + 1 %></a>
+	<%
+				}
+			}
+
+			if (paginationCurrentPage < paginationTotalPages - 1) {
+	%>
+	<a href="<%= request.getContextPath() %><%= paginationBasePath %>?<%= paginationQueryJoin %>page=<%= paginationCurrentPage + 1 %>&pageSize=<%= paginationPageSize %>">Next &raquo;</a>
+	<%
+			}
+		}
+	%>
+</div>
+
+

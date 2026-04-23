@@ -1,0 +1,134 @@
+openapi: 3.0.3
+info:
+  title: BigBook REST API
+  version: 1.0.0
+  description: REST API for managing books, based on BookResource servlet.
+
+servers:
+  - url: /books
+
+paths:
+  /:
+    get:
+      summary: Get all books or search books
+      description: |
+        Returns all books, paginated books, or search results depending on query parameters.
+      parameters:
+        - in: query
+          name: id
+          schema: { type: integer }
+          description: Retrieve a single book by ID.
+        - in: query
+          name: search
+          schema: { type: string }
+          description: Search books by keyword.
+        - in: query
+          name: page
+          schema: { type: integer, default: 0 }
+        - in: query
+          name: size
+          schema: { type: integer, default: 2147483647 }
+      responses:
+        '200':
+          description: Books retrieved
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RestResponse' }
+            application/xml:
+              schema: { $ref: '#/components/schemas/RestResponse' }
+            text/plain:
+              schema: { type: string }
+        '400':
+          description: Invalid request
+        '404':
+          description: Book not found
+        '500':
+          description: Server error
+
+    post:
+      summary: Create a new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/BookDTO' }
+      responses:
+        '201':
+          description: Book created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RestResponse' }
+        '400':
+          description: Validation failed
+        '500':
+          description: Server error
+
+    put:
+      summary: Update an existing book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/BookDTO' }
+      responses:
+        '200':
+          description: Book updated
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RestResponse' }
+        '400':
+          description: Invalid input or missing ID
+        '404':
+          description: Book not found
+        '500':
+          description: Server error
+
+    delete:
+      summary: Delete a book
+      parameters:
+        - in: query
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Book deleted
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RestResponse' }
+        '400':
+          description: Invalid ID
+        '404':
+          description: Book not found
+        '500':
+          description: Server error
+
+components:
+  schemas:
+    BookDTO:
+      type: object
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        author: { type: string }
+        date: { type: string }
+        genres:
+          type: array
+          items: { type: string }
+        characters:
+          type: array
+          items: { type: string }
+        synopsis: { type: string }
+
+    RestResponse:
+      type: object
+      properties:
+        status: { type: integer }
+        message: { type: string }
+        data:
+          oneOf:
+            - $ref: '#/components/schemas/BookDTO'
+            - type: array
+              items: { $ref: '#/components/schemas/BookDTO' }
+            - type: string
+            - type: 'null'

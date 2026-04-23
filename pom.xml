@@ -14,7 +14,6 @@
 
     <modules>
         <module>commons</module>
-        <module>mvc</module>
         <module>rest</module>
     </modules>
 </project>

@@ -51,7 +51,7 @@ public class ApplicationInitialiser implements ServletContextListener {
      * Called by the servlet container when the web application is shutting down.
      * Performs any necessary cleanup of resources.
      *
-     * @param event The ServletContextEvent containing the ServletContext.
+     * @param event The {@link ServletContextEvent} containing the {@link ServletContext}.
      */
     @Override
     public void contextDestroyed(ServletContextEvent event) {

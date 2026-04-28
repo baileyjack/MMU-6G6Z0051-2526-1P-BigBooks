@@ -7,17 +7,13 @@
     <h2>Most Recent Books</h2>
 
     <% if (recentBooks != null && !recentBooks.isEmpty()) { %>
-    <%
-        for (Book recentBook : recentBooks) {
+    <% for (Book recentBook : recentBooks) {
             request.setAttribute("bookItem", recentBook);
-            request.setAttribute("showBookActions", Boolean.TRUE);
-    %>
+            request.setAttribute("showBookActions", Boolean.TRUE); %>
     <%@ include file="/WEB-INF/views/fragments/cards/bookItem.jspf" %>
     <% } %>
-    <%
-            request.removeAttribute("bookItem");
-            request.removeAttribute("showBookActions");
-    %>
+    <% request.removeAttribute("bookItem");
+       request.removeAttribute("showBookActions"); %>
     <% } else { %>
     <div class="no-books">
         <h2>No recent books found.</h2>

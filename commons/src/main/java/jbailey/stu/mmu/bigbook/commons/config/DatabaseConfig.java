@@ -1,7 +1,9 @@
 package jbailey.stu.mmu.bigbook.commons.config;
 
+// External Imports
 import lombok.extern.slf4j.Slf4j;
 
+// Java Imports
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

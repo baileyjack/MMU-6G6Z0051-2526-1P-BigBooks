@@ -4,6 +4,11 @@ import jbailey.stu.mmu.bigbook.commons.model.Book;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElementWrapper;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import java.util.List;
 
@@ -28,7 +33,8 @@ public class BookDTO {
     private String title;
     private String author;
     private String date;
-    private List<String> genres; // Strings for simplicity instead of a list of the object
+    private List<String> genres;
     private List<String> characters;
     private String synopsis;
 }
+

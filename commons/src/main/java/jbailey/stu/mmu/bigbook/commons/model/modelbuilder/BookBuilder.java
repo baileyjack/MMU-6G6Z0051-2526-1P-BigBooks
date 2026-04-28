@@ -1,13 +1,17 @@
 package jbailey.stu.mmu.bigbook.commons.model.modelbuilder;
 
+// Internal Imports
 import jbailey.stu.mmu.bigbook.commons.dao.BookRowMapper;
 import jbailey.stu.mmu.bigbook.commons.model.Book;
 import jbailey.stu.mmu.bigbook.commons.model.Character;
 import jbailey.stu.mmu.bigbook.commons.model.Genre;
 import jbailey.stu.mmu.bigbook.commons.service.BookService;
+
+// External Imports
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+// Java Imports
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;

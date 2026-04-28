@@ -1,9 +1,11 @@
 package jbailey.stu.mmu.bigbook.commons.model;
 
+// External Imports
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// Java Imports
 import java.util.List;
 
 /**

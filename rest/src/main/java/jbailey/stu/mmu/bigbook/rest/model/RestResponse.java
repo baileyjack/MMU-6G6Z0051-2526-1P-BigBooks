@@ -1,5 +1,8 @@
 package jbailey.stu.mmu.bigbook.rest.model;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAnyElement;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +26,6 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@XmlRootElement(name = "RestResponse")
 public class RestResponse<T> {
     private int status;
     private String message;

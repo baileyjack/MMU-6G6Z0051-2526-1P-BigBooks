@@ -1,7 +1,9 @@
 package jbailey.stu.mmu.bigbook.commons.model.vaidation;
 
+// Internal Imports
 import jbailey.stu.mmu.bigbook.commons.util.DateUtility;
 
+// Java Imports
 import java.util.ArrayList;
 import java.util.List;
 

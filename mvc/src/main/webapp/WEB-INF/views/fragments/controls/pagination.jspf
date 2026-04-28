@@ -1,15 +1,15 @@
 <%
-	Integer paginationCurrentPageAttr = (Integer) request.getAttribute("currentPage");
-	Integer paginationTotalPagesAttr = (Integer) request.getAttribute("totalPages");
-	Integer paginationPageSizeAttr = (Integer) request.getAttribute("pageSize");
+	Integer currentPageAttribute = (Integer) request.getAttribute("currentPage");
+	Integer totalPagesAttribute = (Integer) request.getAttribute("totalPages");
+	Integer pageSiseAttribute = (Integer) request.getAttribute("pageSize");
 
-	int paginationCurrentPage = paginationCurrentPageAttr != null ? paginationCurrentPageAttr : 0;
-	int paginationTotalPages = paginationTotalPagesAttr != null ? paginationTotalPagesAttr : 0;
-	int paginationPageSize = paginationPageSizeAttr != null ? paginationPageSizeAttr : 10;
+	int currentPageFinal = currentPageAttribute != null ? currentPageAttribute : 0;
+	int totalPageFinal = totalPagesAttribute != null ? totalPagesAttribute : 0;
+	int pageSizeFinal = pageSiseAttribute != null ? pageSiseAttribute : 10;
 
-	String paginationBasePath = (String) request.getAttribute("paginationBasePath");
-	if (paginationBasePath == null || paginationBasePath.isEmpty()) {
-		paginationBasePath = "/bigbookmvc/books";
+	String basePath = (String) request.getAttribute("paginationBasePath");
+	if (basePath == null || basePath.isEmpty()) {
+		basePath = "/bigbookmvc/books";
 	}
 
 	String paginationQueryPrefix = (String) request.getAttribute("paginationQueryPrefix");
@@ -17,37 +17,37 @@
 			? paginationQueryPrefix + "&"
 			: "";
 %>
+
 <div class="pagination">
 	<%
-		if (paginationTotalPages > 1) {
-			if (paginationCurrentPage > 0) {
+		if (totalPageFinal > 1) {
+			if (currentPageFinal > 0) {
 	%>
-	<a href="<%= request.getContextPath() %><%= paginationBasePath %>?<%= paginationQueryJoin %>page=<%= paginationCurrentPage - 1 %>&pageSize=<%= paginationPageSize %>">&laquo; Prev</a>
+	<a href="<%= request.getContextPath() %><%= basePath %>?<%= paginationQueryJoin %>page=<%= currentPageFinal - 1 %>&pageSize=<%= pageSizeFinal %>">&laquo; Prev</a>
 	<%
 			}
 
-			int maxPageLinks = 10;
-			int start = Math.max(0, paginationCurrentPage - (maxPageLinks / 2));
-			int end = Math.min(paginationTotalPages - 1, start + maxPageLinks - 1);
+			int maxPageLinks = 10; // hard coded but could be changed
+			int start = Math.max(0, currentPageFinal - (maxPageLinks / 2));
+			int end = Math.min(totalPageFinal - 1, start + maxPageLinks - 1);
 			if ((end - start + 1) < maxPageLinks) {
 				start = Math.max(0, end - maxPageLinks + 1);
 			}
 
 			for (int i = start; i <= end; i++) {
-				if (i == paginationCurrentPage) {
-	%>
+				if (i == currentPageFinal) { %>
 	<span class="current"><%= i + 1 %></span>
-	<%
+    <%
 				} else {
 	%>
-	<a href="<%= request.getContextPath() %><%= paginationBasePath %>?<%= paginationQueryJoin %>page=<%= i %>&pageSize=<%= paginationPageSize %>"><%= i + 1 %></a>
+	<a href="<%= request.getContextPath() %><%= basePath %>?<%= paginationQueryJoin %>page=<%= i %>&pageSize=<%= pageSizeFinal %>"><%= i + 1 %></a>
 	<%
 				}
 			}
 
-			if (paginationCurrentPage < paginationTotalPages - 1) {
+			if (currentPageFinal < totalPageFinal - 1) {
 	%>
-	<a href="<%= request.getContextPath() %><%= paginationBasePath %>?<%= paginationQueryJoin %>page=<%= paginationCurrentPage + 1 %>&pageSize=<%= paginationPageSize %>">Next &raquo;</a>
+	<a href="<%= request.getContextPath() %><%= basePath %>?<%= paginationQueryJoin %>page=<%= currentPageFinal + 1 %>&pageSize=<%= pageSizeFinal %>">Next &raquo;</a>
 	<%
 			}
 		}

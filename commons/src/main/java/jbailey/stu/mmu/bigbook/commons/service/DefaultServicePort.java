@@ -1,8 +1,5 @@
 package jbailey.stu.mmu.bigbook.commons.service;
 
-import jbailey.stu.mmu.bigbook.commons.dao.BookDAO;
-import jbailey.stu.mmu.bigbook.commons.dao.query.JdbcQueryAdapter;
-
 /**
  * Default implementation of {@link ServicePort}.
  * Acts as a container for the {@link BookService}. This allows the {@link ServicePort} to be used

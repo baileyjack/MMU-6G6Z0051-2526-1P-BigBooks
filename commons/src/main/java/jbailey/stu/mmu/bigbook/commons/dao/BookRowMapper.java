@@ -1,11 +1,13 @@
 package jbailey.stu.mmu.bigbook.commons.dao;
 
+// Internal Imports
 import jbailey.stu.mmu.bigbook.commons.model.Book;
 import jbailey.stu.mmu.bigbook.commons.model.modelbuilder.BookBuilder;
 import jbailey.stu.mmu.bigbook.commons.model.Genre;
 import jbailey.stu.mmu.bigbook.commons.model.Character;
 import jbailey.stu.mmu.bigbook.commons.util.BookUtility;
 
+// Java Imports
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;

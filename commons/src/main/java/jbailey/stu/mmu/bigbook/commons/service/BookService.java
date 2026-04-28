@@ -1,5 +1,6 @@
 package jbailey.stu.mmu.bigbook.commons.service;
 
+// Internal Imports
 import jbailey.stu.mmu.bigbook.commons.dao.BookDAO;
 import jbailey.stu.mmu.bigbook.commons.dao.query.QueryPort;
 import jbailey.stu.mmu.bigbook.commons.model.Book;
@@ -10,6 +11,7 @@ import jbailey.stu.mmu.bigbook.commons.util.BookUtility;
 import jbailey.stu.mmu.bigbook.commons.util.InputSanitiser;
 import jbailey.stu.mmu.bigbook.commons.model.vaidation.BookValidator;
 
+// Java Imports
 import java.util.List;
 import java.util.Objects;
 

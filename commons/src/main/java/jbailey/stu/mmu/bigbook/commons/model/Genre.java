@@ -1,5 +1,6 @@
 package jbailey.stu.mmu.bigbook.commons.model;
 
+// External Imports
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;

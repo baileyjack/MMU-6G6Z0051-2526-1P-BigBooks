@@ -1,10 +1,14 @@
 package jbailey.stu.mmu.bigbook.commons.dao;
 
+// Internal Imports
 import jbailey.stu.mmu.bigbook.commons.dao.query.QueryPort;
 import jbailey.stu.mmu.bigbook.commons.model.Book;
 import jbailey.stu.mmu.bigbook.commons.util.BookUtility;
+
+// External Imports
 import lombok.extern.slf4j.Slf4j;
 
+// Java Imports
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;

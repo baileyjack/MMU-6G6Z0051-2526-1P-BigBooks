@@ -1,8 +1,9 @@
-package jbailey.stu.mmu.bigbook.rest.serializer;
+package jbailey.stu.mmu.bigbook.rest.serialize.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import jbailey.stu.mmu.bigbook.rest.model.RestResponse;
+import jbailey.stu.mmu.bigbook.rest.serialize.ResponseSerializer;
 
 /**
  * JSON serializer using GSON.
@@ -33,11 +34,11 @@ public class JsonSerializer<T> implements ResponseSerializer<T> {
      * Deserialize a JSON {@code String} to a specific type.
      * 
      * @param jsonString The JSON {@code String} to deserialize.
-     * @param clazz The target class type.
+     * @param classType The target class type.
      * @return Object of type {@code U}.
      */
     @Override
-    public <U> U deserialize(String jsonString, Class<U> clazz) {
-        return GSON.fromJson(jsonString, clazz);
+    public <U> U deserialize(String jsonString, Class<U> classType) {
+        return GSON.fromJson(jsonString, classType);
     }
 }

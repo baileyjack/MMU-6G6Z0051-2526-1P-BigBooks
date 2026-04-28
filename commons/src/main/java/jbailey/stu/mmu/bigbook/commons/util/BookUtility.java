@@ -1,8 +1,10 @@
 package jbailey.stu.mmu.bigbook.commons.util;
 
+// Internal Imports
 import jbailey.stu.mmu.bigbook.commons.model.Character;
 import jbailey.stu.mmu.bigbook.commons.model.Genre;
 
+// Java Imports
 import java.util.Arrays;
 import java.util.List;
 

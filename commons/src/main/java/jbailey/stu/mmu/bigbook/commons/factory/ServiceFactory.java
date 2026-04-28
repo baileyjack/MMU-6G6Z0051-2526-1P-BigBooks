@@ -1,5 +1,6 @@
 package jbailey.stu.mmu.bigbook.commons.factory;
 
+// Internal Imports
 import jbailey.stu.mmu.bigbook.commons.dao.BookDAO;
 import jbailey.stu.mmu.bigbook.commons.dao.query.JdbcQueryAdapter;
 import jbailey.stu.mmu.bigbook.commons.service.BookService;

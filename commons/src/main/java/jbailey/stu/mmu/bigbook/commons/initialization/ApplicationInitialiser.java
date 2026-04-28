@@ -1,15 +1,20 @@
 package jbailey.stu.mmu.bigbook.commons.initialization;
 
-import jakarta.servlet.ServletContext;
+// Internal Imports
 import jbailey.stu.mmu.bigbook.commons.config.DatabaseConfig;
 import jbailey.stu.mmu.bigbook.commons.dao.BookDAO;
 import jbailey.stu.mmu.bigbook.commons.dao.query.JdbcQueryAdapter;
 import jbailey.stu.mmu.bigbook.commons.factory.ServiceFactory;
 import jbailey.stu.mmu.bigbook.commons.service.BookService;
 import jbailey.stu.mmu.bigbook.commons.service.ServicePort;
+
+// Java Imports
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
+
+// External Imports
 import lombok.extern.slf4j.Slf4j;
 
 /**

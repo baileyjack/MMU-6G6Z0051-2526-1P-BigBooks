@@ -1,4 +1,4 @@
-package jbailey.stu.mmu.bigbook.rest.serializer;
+package jbailey.stu.mmu.bigbook.rest.serialize;
 
 import jbailey.stu.mmu.bigbook.rest.model.RestResponse;
 
@@ -25,8 +25,8 @@ public interface ResponseSerializer<T> {
      * Deserialize a {@code String} to an object of the specified type.
      * 
      * @param data The {@code String} data to deserialize.
-     * @param clazz The target class type.
+     * @param classType The target class type.
      * @return A generic object of type {@code U}.
      */
-    <U> U deserialize(String data, Class<U> clazz);
+    <U> U deserialize(String data, Class<U> classType);
 }

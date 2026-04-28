@@ -1,7 +1,8 @@
-package jbailey.stu.mmu.bigbook.rest.serializer;
+package jbailey.stu.mmu.bigbook.rest.serialize.text;
 
 import jbailey.stu.mmu.bigbook.commons.model.Book;
 import jbailey.stu.mmu.bigbook.rest.model.RestResponse;
+import jbailey.stu.mmu.bigbook.rest.serialize.ResponseSerializer;
 
 import java.util.List;
 
@@ -65,7 +66,7 @@ public class TextSerializer<T> implements ResponseSerializer<T> {
      * @throws UnsupportedOperationException always, as TEXT format is output-only.
      */
     @Override
-    public <U> U deserialize(String text, Class<U> clazz) {
+    public <U> U deserialize(String text, Class<U> classType) {
         throw new UnsupportedOperationException("Deserialization from TEXT format is not supported.");
     }
 

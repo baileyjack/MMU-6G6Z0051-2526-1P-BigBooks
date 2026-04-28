@@ -9,7 +9,7 @@ import jbailey.stu.mmu.bigbook.commons.service.ServicePort;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Initializes the dependency container at app boot.
+ * Initialises the dependency container at app boot.
  * Runs when the servlet context is created, and wires all services. It stores
  * the container in {@link ServletContext} for access by any controllers.
  * Controllers can then retrieve services through {@code ServicePort container = (ServicePort) servletContext.getAttribute("servicePort");}

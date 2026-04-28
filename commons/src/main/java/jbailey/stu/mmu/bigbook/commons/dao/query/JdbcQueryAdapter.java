@@ -1,8 +1,10 @@
 package jbailey.stu.mmu.bigbook.commons.dao.query;
 
+// Internal Imports
 import jbailey.stu.mmu.bigbook.commons.config.DatabaseConfig;
 import jbailey.stu.mmu.bigbook.commons.dao.DatabaseRowMapper;
 
+// Java Imports
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

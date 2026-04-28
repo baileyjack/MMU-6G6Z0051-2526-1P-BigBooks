@@ -1,6 +1,10 @@
 package jbailey.stu.mmu.bigbook.rest.format;
 
-import jbailey.stu.mmu.bigbook.rest.serializer.*;
+import jbailey.stu.mmu.bigbook.rest.serialize.*;
+import jbailey.stu.mmu.bigbook.rest.serialize.json.JsonSerializer;
+import jbailey.stu.mmu.bigbook.rest.serialize.text.TextSerializer;
+import jbailey.stu.mmu.bigbook.rest.serialize.xml.XmlSerializer;
+import jbailey.stu.mmu.bigbook.rest.serialize.yaml.YamlSerializer;
 import lombok.extern.slf4j.Slf4j;
 
 // todo: we could move this to a more DI focussed class. Should we really have a case at the end, for example?
@@ -21,6 +25,7 @@ public class RESTFormatNegotiator {
     public enum ResponseFormat {
         JSON("application/json"),
         XML("application/xml"),
+        YAML("application/x-yaml"),
         TEXT("text/plain");
 
         private final String mimeType;
@@ -33,6 +38,7 @@ public class RESTFormatNegotiator {
             return mimeType;
         }
     }
+
 
     /**
      * Determine the format from the Accept header.
@@ -65,7 +71,11 @@ public class RESTFormatNegotiator {
             } else if (cleanType.contains("application/json")) {
                 log.debug("Client accepts JSON format.");
                 return ResponseFormat.JSON;
+            } else if (cleanType.contains("application/x-yaml") || cleanType.contains("application/yaml") || cleanType.contains("text/yaml")) {
+                log.debug("Client accepts YAML format.");
+                return ResponseFormat.YAML;
             }
+
         }
 
         // If no recognized format, default JSON.
@@ -86,6 +96,7 @@ public class RESTFormatNegotiator {
             case JSON -> (ResponseSerializer<T>) new JsonSerializer<>();
             case XML -> (ResponseSerializer<T>) new XmlSerializer<>();
             case TEXT -> (ResponseSerializer<T>) new TextSerializer<>();
+            case YAML -> (ResponseSerializer<T>) new YamlSerializer<>();
         };
     }
 }

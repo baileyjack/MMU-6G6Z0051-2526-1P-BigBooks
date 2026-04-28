@@ -1,7 +1,9 @@
 package jbailey.stu.mmu.bigbook.commons.dao.query;
 
+// Internal Imports
 import jbailey.stu.mmu.bigbook.commons.dao.DatabaseRowMapper;
 
+// Java Imports
 import java.sql.SQLException;
 import java.util.List;
 

@@ -10,10 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 // todo: we could move this to a more DI focussed class. Should we really have a case at the end, for example?
 
 /**
- * Content negotiation class for REST API responses.
- * It analyzes the HTTP Accept header from client requests and determines
- * the serialiser which is to be used in the response.
- * Supported formats currently include application/json (default), application/xml, text/plain (output only)
+ * Content negotiation class for REST API responses analyses the HTTP Accept header from client requests and determines
+ * the serialiser which is to be used in the response. Supported formats include application/json (default), application/xml, application/yaml text/plain (output only)
  * The olny things that would need to be extended to add a new content type are this class and the serialiser to use
  */
 @Slf4j

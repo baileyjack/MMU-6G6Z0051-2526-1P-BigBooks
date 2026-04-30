@@ -1,8 +1,7 @@
 <%@ page import="java.util.List" %>
-<%
-	List<String> errors = (List<String>) request.getAttribute("errors");
-	if (errors != null && !errors.isEmpty()) {
-%>
+<% List<String> errors = (List<String>) request.getAttribute("errors");
+	if (errors != null && !errors.isEmpty()) {%>
+
 <div class="error-box">
 	<strong>Please fix the following errors:</strong>
 	<ul>
@@ -11,7 +10,5 @@
 		<% } %>
 	</ul>
 </div>
-<%
-	}
-%>
+<%}%>
 

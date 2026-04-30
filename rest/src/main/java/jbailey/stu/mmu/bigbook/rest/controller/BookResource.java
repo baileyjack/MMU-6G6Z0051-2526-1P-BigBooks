@@ -15,9 +15,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,6 +46,18 @@ public class BookResource extends HttpServlet {
         log.debug(request.getParameterMap().toString());
         try {
             BookService bookService = servicePort.getBookService();
+            String body = readRequestBody(request);
+            log.debug("Raw request body:\n{}", body);
+
+            if (body == null || body.trim().isEmpty()) {
+                sendErrorResponse(request, response, 400, "Request body required");
+                return;
+            }
+            if (!body.contains("\n") && body.contains(":")) {
+                sendErrorResponse(request, response, 400, "Malformed YAML: missing line breaks. Raw body: " + body.substring(0, Math.min(200, body.length())));
+                return;
+            }
+
             RestResponse<?> restResponse;
 
             String idParam = request.getParameter("id");
@@ -80,19 +93,20 @@ public class BookResource extends HttpServlet {
         log.info("Attempting a POST request to get books from Book Resource API.");
         try {
             BookService bookService = servicePort.getBookService();
+            String body = readRequestBody(request);
+            log.debug("Raw request body:\n{}", body);
+            log.debug("Raw bytes: {}", Arrays.toString(body.getBytes(StandardCharsets.UTF_8)));
+
+            if (body == null || body.trim().isEmpty()) {
+                sendErrorResponse(request, response, 400, "Request body required");
+                return;
+            }
 
             // Determine how to parse the incoming body
             log.info("POST requested body type: {}", request.getHeader("Content-Type"));
             ResponseSerializer<BookDTO> inputSerializer = getRequestSerializer(request);
             if (inputSerializer == null) {
                 sendErrorResponse(request, response, 400, "Unsupported Content-Type");
-                return;
-            }
-
-            String body = readRequestBody(request);
-
-            if (body.isEmpty()) {
-                sendErrorResponse(request, response, 400, "Request body required");
                 return;
             }
 
@@ -146,15 +160,17 @@ public class BookResource extends HttpServlet {
         try {
             BookService bookService = servicePort.getBookService();
 
-            ResponseSerializer<BookDTO> inputSerializer = getRequestSerializer(request);
-            if (inputSerializer == null) {
-                sendErrorResponse(request, response, 400, "Unsupported Content-Type");
+            String body = readRequestBody(request);
+            log.debug("Raw request body:\n{}", body);
+
+            if (body == null || body.trim().isEmpty()) {
+                sendErrorResponse(request, response, 400, "Request body required");
                 return;
             }
 
-            String body = readRequestBody(request);
-            if (body.isEmpty()) {
-                sendErrorResponse(request, response, 400, "Request body required");
+            ResponseSerializer<BookDTO> inputSerializer = getRequestSerializer(request);
+            if (inputSerializer == null) {
+                sendErrorResponse(request, response, 400, "Unsupported Content-Type");
                 return;
             }
 
@@ -250,10 +266,6 @@ public class BookResource extends HttpServlet {
         }
     }
 
-    // -------------------------------------------------------------------------
-    // Helpers
-    // -------------------------------------------------------------------------
-
     private ResponseSerializer<BookDTO> getRequestSerializer(HttpServletRequest request) {
         String contentType = request.getHeader("Content-Type");
         RESTFormatNegotiator.ResponseFormat format = RESTFormatNegotiator.negotiateFormat(contentType);
@@ -298,18 +310,16 @@ public class BookResource extends HttpServlet {
         }
     }
 
+    /**
+     * Used to be a BufferedReader but it strips newlines which caused YAML issues so it now reads raw bytes.
+     * @param request the HTTP Request to read body from
+     * @return a String with the request body
+     * @throws IOException if the request cannot be read.
+     */
     private String readRequestBody(HttpServletRequest request) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader reader = request.getReader()) {
-            String line;
-            while ((line = reader.readLine()) != null) sb.append(line);
-        }
-        return sb.toString();
+        byte[] bytes = request.getInputStream().readAllBytes();
+        return new String(bytes, StandardCharsets.UTF_8);
     }
-
-    // -------------------------------------------------------------------------
-    // Query helpers
-    // -------------------------------------------------------------------------
 
     private RestResponse<?> getBookById(BookService service, String idParam) {
         int id = parseIntOrDefault(idParam, -1);

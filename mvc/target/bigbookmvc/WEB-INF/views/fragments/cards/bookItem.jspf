@@ -1,23 +1,26 @@
+<!-- Book Item Fragment which gets a book object as request attribute "bookItem" and renders a card with book details. -->
+
 <%@ page import="jbailey.stu.mmu.bigbook.commons.model.Book" %>
 <%@ page import="jbailey.stu.mmu.bigbook.commons.model.Genre" %>
 <%@ page import="jbailey.stu.mmu.bigbook.commons.model.Character" %>
 <%@ page import="jbailey.stu.mmu.bigbook.commons.util.DateUtility" %>
 <%@ page import="java.util.List" %>
+
 <%
-    // Shared Book card fragment. Parent JSP sets request attribute: "bookItem".
     Book bookItemData = (Book) request.getAttribute("bookItem");
-    boolean bookItemShowActions = true;
-    Object bookItemShowActionsAttr = request.getAttribute("showBookActions");
-    if (bookItemShowActionsAttr instanceof Boolean) {
-        bookItemShowActions = (Boolean) bookItemShowActionsAttr;
+    boolean showBookItemActions = true;
+    Object showBookItemsActionsAttribute = request.getAttribute("showBookActions");
+
+    if (showBookItemsActionsAttribute instanceof Boolean) {
+        showBookItemActions = (Boolean) showBookItemsActionsAttribute;
     }
 
     if (bookItemData != null) {
-        String bookItemIsoForValidCheck = DateUtility.displayISODate(bookItemData.getDate());
+        String bookItemDateToValidate = DateUtility.displayISODate(bookItemData.getDate());
         boolean bookItemValidDate = false;
-        if (bookItemIsoForValidCheck != null && !bookItemIsoForValidCheck.isEmpty()) {
+        if (bookItemDateToValidate != null && !bookItemDateToValidate.isEmpty()) {
             try {
-                java.time.LocalDate parsedDate = java.time.LocalDate.parse(bookItemIsoForValidCheck);
+                java.time.LocalDate parsedDate = java.time.LocalDate.parse(bookItemDateToValidate);
                 bookItemValidDate = !parsedDate.isAfter(java.time.LocalDate.now());
             } catch (Exception silentException) {
                 bookItemValidDate = false;
@@ -25,19 +28,20 @@
         }
 
         String bookItemDateOutput;
-        if (bookItemIsoForValidCheck == null || bookItemIsoForValidCheck.isEmpty()) {
+        if (bookItemDateToValidate == null || bookItemDateToValidate.isEmpty()) {
             bookItemDateOutput = DateUtility.INVALID_DATE_MESSAGE;
         } else {
             try {
-                java.time.LocalDate parsedDate = java.time.LocalDate.parse(bookItemIsoForValidCheck);
+                java.time.LocalDate parsedDate = java.time.LocalDate.parse(bookItemDateToValidate);
                 bookItemDateOutput = parsedDate.isAfter(java.time.LocalDate.now())
                         ? DateUtility.INVALID_DATE_MESSAGE
-                        : bookItemIsoForValidCheck;
+                        : bookItemDateToValidate;
             } catch (Exception ex) {
                 bookItemDateOutput = DateUtility.INVALID_DATE_MESSAGE;
             }
         }
 %>
+
 <div class="book-item<%= bookItemValidDate ? "" : " invalid-date" %>">
     <div class="book-header" onclick="toggleBook(this)">
         <div class="book-title-author">
@@ -61,40 +65,29 @@
         <div class="detail-row">
             <div class="detail-label">Genres:</div>
             <div class="detail-value">
-                <%
-                    List<Genre> genres = bookItemData.getGenres();
+                <% List<Genre> genres = bookItemData.getGenres();
                     if (genres != null && !genres.isEmpty()) {
                         for (Genre g : genres) {
-                %>
-                <span class="pill"><%= g.getName() %></span>
+                %> <span class="pill"><%= g.getName() %></span>
                 <%
                         }
                     } else {
-                %>
-                No genres listed
-                <%
-                    }
-                %>
+                %> No genres listed <%
+                    } %>
             </div>
         </div>
 
         <div class="detail-row">
             <div class="detail-label">Characters:</div>
             <div class="detail-value">
-                <%
-                    List<Character> characters = bookItemData.getCharacters();
+                <% List<Character> characters = bookItemData.getCharacters();
                     if (characters != null && !characters.isEmpty()) {
                         for (Character c : characters) {
-                %>
-                <span class="pill"><%= c.getName() %></span>
+                %> <span class="pill"><%= c.getName() %></span>
                 <%
                         }
-                    } else {
-                %>
-                No characters listed
-                <%
-                    }
-                %>
+                    } else { %> No characters listed <%
+                    } %>
             </div>
         </div>
 
@@ -105,7 +98,7 @@
             </div>
         </div>
 
-        <% if (bookItemShowActions) { %>
+        <% if (showBookItemActions) { %>
         <div class="book-actions">
             <a href="<%= request.getContextPath() %>/bigbookmvc/books/edit?id=<%= bookItemData.getId() %>" class="edit">Edit</a>
             <a href="<%= request.getContextPath() %>/bigbookmvc/books/delete?id=<%= bookItemData.getId() %>" class="delete" onclick="return confirm('Are you sure you want to delete this book?')">Delete</a>
@@ -113,8 +106,6 @@
         <% } %>
     </div>
 </div>
-<%
-    }
-%>
+<%}%>
 
 

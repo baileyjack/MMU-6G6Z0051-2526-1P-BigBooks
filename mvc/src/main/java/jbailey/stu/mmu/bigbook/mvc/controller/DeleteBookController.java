@@ -12,6 +12,7 @@ import jbailey.stu.mmu.bigbook.commons.service.ServicePort;
 import jbailey.stu.mmu.bigbook.commons.service.BookService;
 
 // Logging
+import jbailey.stu.mmu.bigbook.mvc.util.MVCErrorUtility;
 import lombok.extern.slf4j.Slf4j;
 
 // Java
@@ -40,44 +41,27 @@ public class DeleteBookController extends HttpServlet {
      * @param response as an HTTPServletResponse response
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            BookService bookService = servicePort.getBookService();
-            String idParameter = request.getParameter("id");
-            if (idParameter == null || idParameter.trim().isEmpty()) {
-                log.warn("DeleteBook doGet: Missing or empty ID");
-                try {
-                    response.sendRedirect("listBooks");
-                } catch (IOException ioException) {
-                    log.error("Failed to redirect due to a missing ID", ioException);
+        protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+            try {
+                BookService bookService = servicePort.getBookService();
+                String idParameter = request.getParameter("id");
+                if (idParameter == null || idParameter.trim().isEmpty()) {
+                    log.warn("DeleteBook doGet: Missing or empty ID");
+                    response.sendRedirect(request.getContextPath() + "/listBooks");
+                    return;
                 }
-                return;
-            }
-            int id;
-            try {
-                id = Integer.parseInt(idParameter);
-            } catch (NumberFormatException numberFormatException) {
-                log.error("DeleteBook doGet: Invalid id parameter: {}", idParameter, numberFormatException);
+                int id;
                 try {
-                    response.sendRedirect("listBooks");
-                } catch (IOException ioException) {
-                    log.error("Failed to redirect on invalid id", ioException);
+                    id = Integer.parseInt(idParameter.trim());
+                } catch (NumberFormatException numberFormatException) {
+                    log.warn("DeleteBook doGet: Invalid id parameter: {}", idParameter);
+                    response.sendRedirect(request.getContextPath() + "/listBooks");
+                    return;
                 }
-                return;
-            }
-            bookService.deleteBook(id);
-            try {
-                response.sendRedirect("listBooks");
-            } catch (IOException ioException) {
-                log.error("Failed to redirect after delete", ioException);
-            }
-        } catch (Exception exception) {
-            log.error("DeleteBook doGet: Unexpected error", exception);
-            try {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An unexpected error occurred while deleting the book.");
-            } catch (IOException ioException) {
-                log.error("Failed to send error response", ioException);
+                bookService.deleteBook(id);
+                response.sendRedirect(request.getContextPath() + "/listBooks");
+            } catch (Exception exception) {
+                MVCErrorUtility.handleServerError(response, log, exception, "An unexpected error occurred while deleting the book.");
             }
         }
-    }
 }

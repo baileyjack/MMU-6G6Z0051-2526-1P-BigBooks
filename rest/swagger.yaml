@@ -2,106 +2,178 @@ openapi: 3.0.3
 info:
   title: BigBook REST API
   version: 1.0.0
-  description: REST API for managing books, based on BookResource servlet.
+  description: >
+    RESTful API for managing books in the BigBook system.  
+    Supports full content negotiation with JSON, XML, YAML  
+    JSON, XML and YAML are supported for both input and output.
+    Port is 9090 and base path is /books.
 
 servers:
-  - url: /books
+  - url: http://localhost:9090/books
+    description: Base path for BookResource servlet
 
 paths:
   /:
     get:
-      summary: Get all books or search books
-      description: |
-        Returns all books, paginated books, or search results depending on query parameters.
+      summary: Retrieve books
+      description: >
+        Retrieves book based on filters.  
+        - If `id` is provided, returns a single book.  
+        - If `search` is provided, returns matching books.
+        - If neither is provided, returns all books. 
+        - Pagination is supported with `page` and `size` parameters.
+        Supports JSON, XML, YAML output.
       parameters:
-        - in: query
-          name: id
-          schema: { type: integer }
-          description: Retrieve a single book by ID.
-        - in: query
-          name: search
-          schema: { type: string }
-          description: Search books by keyword.
-        - in: query
-          name: page
-          schema: { type: integer, default: 0 }
-        - in: query
-          name: size
-          schema: { type: integer, default: 2147483647 }
+        - name: id
+          in: query
+          schema:
+            type: integer
+          description: Retrieve a book by ID.
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search term for title/author.
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 0
+          description: Pagination page index.
+        - name: size
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+          description: Page size.
       responses:
         '200':
-          description: Books retrieved
+          description: Books retrieved successfully.
           content:
             application/json:
-              schema: { $ref: '#/components/schemas/RestResponse' }
+              schema: { $ref: '#/components/schemas/RestResponseBookList' }
             application/xml:
-              schema: { $ref: '#/components/schemas/RestResponse' }
-            text/plain:
-              schema: { type: string }
+              schema: { $ref: '#/components/schemas/RestResponseBookList' }
+            application/x-yaml:
+              schema: { $ref: '#/components/schemas/RestResponseBookList' }
+            application/yaml:
+              schema: { $ref: '#/components/schemas/RestResponseBookList' }
+            text/yaml:
+              schema: { $ref: '#/components/schemas/RestResponseBookList' }
         '400':
-          description: Invalid request
+          description: Invalid request parameters.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/RestResponseError' } }
+            application/xml:  { schema: { $ref: '#/components/schemas/RestResponseError' } }
+            application/x-yaml: { schema: { $ref: '#/components/schemas/RestResponseError' } }
         '404':
-          description: Book not found
-        '500':
-          description: Server error
+          description: Book not found.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/RestResponseError' } }
+            application/xml:  { schema: { $ref: '#/components/schemas/RestResponseError' } }
+            application/x-yaml: { schema: { $ref: '#/components/schemas/RestResponseError' } }
 
     post:
       summary: Create a new book
+      description: >
+        Creates a book using JSON, XML or YAML.  
+        Output format is determined by Accept header.
       requestBody:
         required: true
         content:
           application/json:
+            schema: { $ref: '#/components/schemas/BookDTO' }
+          application/xml:
+            schema: { $ref: '#/components/schemas/BookDTO' }
+          application/x-yaml:
+            schema: { $ref: '#/components/schemas/BookDTO' }
+          application/yaml:
+            schema: { $ref: '#/components/schemas/BookDTO' }
+          text/yaml:
             schema: { $ref: '#/components/schemas/BookDTO' }
       responses:
         '201':
-          description: Book created
+          description: Book created successfully.
           content:
-            application/json:
-              schema: { $ref: '#/components/schemas/RestResponse' }
+            application/json: { schema: { $ref: '#/components/schemas/RestResponseBook' } }
+            application/xml:  { schema: { $ref: '#/components/schemas/RestResponseBook' } }
+            application/x-yaml: { schema: { $ref: '#/components/schemas/RestResponseBook' } }
+            application/yaml: { schema: { $ref: '#/components/schemas/RestResponseBook' } }
+            text/yaml: { schema: { $ref: '#/components/schemas/RestResponseBook' } }
         '400':
-          description: Validation failed
-        '500':
-          description: Server error
+          description: Validation failed or unsupported Content-Type.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/RestResponseError' } }
+            application/xml:  { schema: { $ref: '#/components/schemas/RestResponseError' } }
+            application/x-yaml: { schema: { $ref: '#/components/schemas/RestResponseError' } }
 
     put:
       summary: Update an existing book
+      description: >
+        Updates a book.  
+        Requires a valid `id` field in the payload.  
+        Accepts JSON, XML or YAML input.
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: '#/components/schemas/BookDTO' }
+          application/xml:
+            schema: { $ref: '#/components/schemas/BookDTO' }
+          application/x-yaml:
+            schema: { $ref: '#/components/schemas/BookDTO' }
+          application/yaml:
+            schema: { $ref: '#/components/schemas/BookDTO' }
+          text/yaml:
+            schema: { $ref: '#/components/schemas/BookDTO' }
       responses:
         '200':
-          description: Book updated
+          description: Book updated successfully.
           content:
-            application/json:
-              schema: { $ref: '#/components/schemas/RestResponse' }
+            application/json: { schema: { $ref: '#/components/schemas/RestResponseBook' } }
+            application/xml:  { schema: { $ref: '#/components/schemas/RestResponseBook' } }
+            application/x-yaml: { schema: { $ref: '#/components/schemas/RestResponseBook' } }
         '400':
-          description: Invalid input or missing ID
+          description: Validation failed or missing ID.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/RestResponseError' } }
+            application/xml:  { schema: { $ref: '#/components/schemas/RestResponseError' } }
+            application/x-yaml: { schema: { $ref: '#/components/schemas/RestResponseError' } }
         '404':
-          description: Book not found
-        '500':
-          description: Server error
+          description: Book could not be found.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/RestResponseError' } }
+            application/xml:  { schema: { $ref: '#/components/schemas/RestResponseError' } }
+            application/x-yaml: { schema: { $ref: '#/components/schemas/RestResponseError' } }
 
     delete:
-      summary: Delete a book
+      summary: Delete book
+      description: Deletes book by ID.
       parameters:
-        - in: query
-          name: id
+        - name: id
+          in: query
           required: true
-          schema: { type: integer }
+          schema:
+            type: integer
       responses:
         '200':
-          description: Book deleted
+          description: Book deleted successfully.
           content:
-            application/json:
-              schema: { $ref: '#/components/schemas/RestResponse' }
+            application/json: { schema: { $ref: '#/components/schemas/RestResponseVoid' } }
+            application/xml:  { schema: { $ref: '#/components/schemas/RestResponseVoid' } }
+            application/x-yaml: { schema: { $ref: '#/components/schemas/RestResponseVoid' } }
         '400':
-          description: Invalid ID
+          description: Invalid ID.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/RestResponseError' } }
+            application/xml:  { schema: { $ref: '#/components/schemas/RestResponseError' } }
+            application/x-yaml: { schema: { $ref: '#/components/schemas/RestResponseError' } }
         '404':
-          description: Book not found
-        '500':
-          description: Server error
+          description: Book not found.
+          content:
+            application/json: { schema: { $ref: '#/components/schemas/RestResponseError' } }
+            application/xml:  { schema: { $ref: '#/components/schemas/RestResponseError' } }
+            application/x-yaml: { schema: { $ref: '#/components/schemas/RestResponseError' } }
 
 components:
   schemas:
@@ -125,10 +197,36 @@ components:
       properties:
         status: { type: integer }
         message: { type: string }
-        data:
-          oneOf:
-            - $ref: '#/components/schemas/BookDTO'
-            - type: array
+        data: {}
+
+    RestResponseBook:
+      allOf:
+        - $ref: '#/components/schemas/RestResponse'
+        - type: object
+          properties:
+            data: { $ref: '#/components/schemas/BookDTO' }
+
+    RestResponseBookList:
+      allOf:
+        - $ref: '#/components/schemas/RestResponse'
+        - type: object
+          properties:
+            data:
+              type: array
               items: { $ref: '#/components/schemas/BookDTO' }
-            - type: string
-            - type: 'null'
+
+    RestResponseVoid:
+      allOf:
+        - $ref: '#/components/schemas/RestResponse'
+        - type: object
+          properties:
+            data:
+              nullable: true
+
+    RestResponseError:
+      allOf:
+        - $ref: '#/components/schemas/RestResponse'
+        - type: object
+          properties:
+            data:
+              nullable: true

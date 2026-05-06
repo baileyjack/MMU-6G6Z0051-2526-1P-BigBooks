@@ -9,7 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @Slf4j
-public class DatabaseConfig {
+public class DatabaseConfiguration {
     public static final String URL = "jdbc:mysql://10.0.0.10:3306/booksepdb";
     public static final String USER = "epuser";
     public static final String PASSWORD = "dh7f9uri837s!et345";

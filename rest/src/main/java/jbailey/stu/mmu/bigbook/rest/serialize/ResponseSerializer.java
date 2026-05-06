@@ -6,7 +6,7 @@ import jbailey.stu.mmu.bigbook.rest.model.RestResponse;
  * Interface for response serializers.
  * 
  * Defines a contract for serializing and deserializing {@link RestResponse} objects
- * to different formats (JSON, XML, TEXT). This allows the REST controller
+ * to different formats (JSON, XML, YAML). This allows the REST controller
  * to be format-agnostic and support multiple output formats.
  * 
  * @param <T> The data type being serialized.

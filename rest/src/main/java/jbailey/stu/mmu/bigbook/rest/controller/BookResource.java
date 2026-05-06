@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * REST API servlet for /books.
  *
- * Supports JSON, XML, YAML and TEXT depending on Accept and Content-Type headers.
+ * Supports JSON, XML, YAML depending on Accept and Content-Type headers.
  */
 @Slf4j
 public class BookResource extends HttpServlet {
@@ -44,19 +44,9 @@ public class BookResource extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         log.info("Attempting a GET request to get books from Book Resource API.");
         log.debug(request.getParameterMap().toString());
+
         try {
             BookService bookService = servicePort.getBookService();
-            String body = readRequestBody(request);
-            log.debug("Raw request body:\n{}", body);
-
-            if (body == null || body.trim().isEmpty()) {
-                sendErrorResponse(request, response, 400, "Request body required");
-                return;
-            }
-            if (!body.contains("\n") && body.contains(":")) {
-                sendErrorResponse(request, response, 400, "Malformed YAML: missing line breaks. Raw body: " + body.substring(0, Math.min(200, body.length())));
-                return;
-            }
 
             RestResponse<?> restResponse;
 
@@ -69,11 +59,13 @@ public class BookResource extends HttpServlet {
             int size = parseIntOrDefault(sizeParam, Integer.MAX_VALUE);
 
             if (idParam != null && !idParam.isEmpty()) {
-                log.info("GET requested with a given ID parameter: " + idParam);
+                log.info("GET requested with a given ID parameter: {}", idParam);
                 restResponse = getBookById(bookService, idParam);
+
             } else if (searchParam != null && !searchParam.isEmpty()) {
-                log.info("GET requested with a search parameter: " + searchParam);
+                log.info("GET requested with a search parameter: {}", searchParam);
                 restResponse = searchBooks(bookService, searchParam, page, size);
+
             } else {
                 log.info("GET requested. Retrieving all books with pagination - page: {}, size: {}", page, size);
                 restResponse = getAllBooks(bookService, page, size);
@@ -282,7 +274,7 @@ public class BookResource extends HttpServlet {
         String body = serializer.serialise((RestResponse<Object>) restResponse);
 
         response.setStatus(restResponse.getStatus());
-        response.setContentType(format.getMimeType() + ";charset=UTF-8");
+        response.setContentType(format.getNegotiatedContentTyoe() + ";charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
 
         try (PrintWriter writer = response.getWriter()) {

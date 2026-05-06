@@ -1,0 +1,432 @@
+/* ------------------------------------------------------------
+   styles.css — consolidated light theme with fixed floating header
+   Paste into: src/styles.css
+------------------------------------------------------------ */
+
+:root {
+    --bg: #f5f5f8;
+    --bg-elevated: #ffffff;
+    --accent: #2563eb;
+    --accent-soft: rgba(37, 99, 235, 0.12);
+    --danger: #dc2626;
+    --text: #111827;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --radius: 10px;
+    --shadow-soft: 0 4px 16px rgba(15, 23, 42, 0.08);
+    --header-height: 72px;
+    --panel-width: 380px;
+
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Reset / base */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.4;
+    font-size: 15px;
+}
+
+/* ------------------------------------------------------------
+   HEADER BAR (fixed floating header)
+   - position: fixed keeps it floating above content
+   - width: 100% ensures it spans the viewport
+   - high z-index keeps it above panels/modals
+------------------------------------------------------------ */
+.header-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(15,23,42,0.04);
+}
+
+/* Ensure header content doesn't wrap awkwardly */
+.header-left h1 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text);
+}
+
+.header-center {
+    flex: 1;
+    max-width: 640px;
+    margin: 0 1rem;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: white;
+    font-size: 0.95rem;
+    color: var(--text);
+    outline: none;
+}
+.search-input:focus {
+    box-shadow: 0 0 0 4px var(--accent-soft);
+    border-color: var(--accent);
+}
+
+/* ------------------------------------------------------------
+   BUTTON GROUPS / TOGGLES
+------------------------------------------------------------ */
+.header-right { display:flex; align-items:center; gap:0.75rem; }
+
+.btn-group {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.28rem 0.6rem;
+    border-radius: 999px;
+    background: #f3f4f6;
+    border: 1px solid var(--border);
+    align-items: center;
+}
+
+.group-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-right: 0.4rem;
+}
+
+.toggle-btn {
+    border: none;
+    border-radius: 999px;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.82rem;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease, transform 0.06s ease;
+}
+.toggle-btn:hover { transform: translateY(-1px); }
+.toggle-btn.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
+/* ------------------------------------------------------------
+   MAIN LAYOUT
+   - Add top padding equal to header height + small gap so content
+     is not hidden under the fixed header.
+------------------------------------------------------------ */
+.main-layout {
+    display: flex;
+    padding: calc(var(--header-height) + 1rem) 1.5rem 1.5rem 1.5rem;
+    gap: 1.25rem;
+    transition: margin-right 0.25s ease;
+    align-items: flex-start;
+}
+.main-layout.detail-open {
+    margin-right: var(--panel-width);
+}
+
+/* ------------------------------------------------------------
+   BOOK TABLE
+------------------------------------------------------------ */
+.book-table-wrapper {
+    flex: 1;
+    background: var(--bg-elevated);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    min-width: 0;
+}
+
+.book-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    table-layout: fixed;
+}
+
+.book-table th,
+.book-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.book-table th {
+    background: #f9fafb;
+    font-weight: 600;
+    color: var(--muted);
+    text-align: left;
+    font-size: 0.85rem;
+}
+
+.book-table td:nth-child(2) { /* Title column */
+    white-space: nowrap;
+    max-width: 420px;
+}
+
+.clickable-row:hover {
+    background: #f3f4f6;
+    cursor: pointer;
+}
+
+/* Responsive: allow title to wrap on small screens */
+@media (max-width: 900px) {
+    .book-table td, .book-table th { white-space: normal; }
+    .header-center { display: none; } /* hide search on small screens to save space */
+}
+
+/* ------------------------------------------------------------
+   PAGINATION
+------------------------------------------------------------ */
+.pagination-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 1rem;
+    background: #f9fafb;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+}
+
+.pagination-bar button {
+    padding: 0.45rem 0.7rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: white;
+    cursor: pointer;
+}
+.pagination-bar button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ------------------------------------------------------------
+   DETAIL PANEL
+   - top uses header height so it sits below the fixed header
+------------------------------------------------------------ */
+/* detail panel viewport sizing and internal scroll */
+.detail-panel {
+    position: fixed;
+    top: var(--header-height);
+    right: 0;
+    width: var(--panel-width);
+    bottom: 0;
+    background: white;
+    border-left: 1px solid var(--border);
+    box-shadow: -6px 0 24px rgba(15, 23, 42, 0.08);
+    transform: translateX(100%);
+    transition: transform 0.22s cubic-bezier(.2,.9,.2,1);
+    padding: 0; /* we'll manage internal spacing */
+    overflow: hidden;
+    z-index: 40;
+}
+
+/* open state */
+.detail-panel.open {
+    transform: translateX(0);
+}
+
+/* internal container that scrolls */
+.detail-panel .detail-inner {
+    height: calc(100vh - var(--header-height));
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    overflow: hidden;
+}
+
+/* header stays at top of panel */
+.detail-panel .detail-header {
+    flex: 0 0 auto;
+    margin-bottom: 0.75rem;
+}
+
+/* body scrolls */
+.detail-panel .detail-body {
+    flex: 1 1 auto;
+    overflow: auto;
+    padding-right: 0.25rem; /* room for scrollbar */
+}
+
+/* footer pinned to bottom */
+.detail-panel .detail-footer {
+    flex: 0 0 auto;
+    margin-top: 0.75rem;
+}
+
+/* Detail internals */
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+.detail-header h2 {
+    margin: 0;
+    font-size: 1.05rem;
+}
+.icon-btn {
+    border: none;
+    background: transparent;
+    font-size: 1.05rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+}
+.icon-btn:hover { background: #f3f4f6; }
+
+.detail-body p {
+    margin: 0.45rem 0;
+    color: var(--text);
+    line-height: 1.35;
+    font-size: 0.95rem;
+}
+.synopsis-text {
+    margin-top: 0.5rem;
+    color: #374151;
+    white-space: pre-wrap;
+    font-size: 0.92rem;
+}
+
+.detail-footer {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    justify-content: flex-end;
+}
+
+/* ------------------------------------------------------------
+   GENERIC BUTTON CLASSES
+------------------------------------------------------------ */
+.primary-btn,
+.primary-btn:active {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+.secondary-btn {
+    background: #e5e7eb;
+    color: var(--text);
+    border: none;
+    padding: 0.55rem 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.danger-btn {
+    background: var(--danger);
+    color: white;
+    border: none;
+    padding: 0.55rem 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* ------------------------------------------------------------
+   MODAL (form)
+------------------------------------------------------------ */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.modal {
+    background: white;
+    padding: 1.6rem;
+    border-radius: var(--radius);
+    width: 460px;
+    box-shadow: var(--shadow-soft);
+    max-width: calc(100% - 32px);
+    max-height: calc(100vh - 120px);
+    overflow: auto;
+}
+
+.modal.small {
+    width: 360px;
+    padding: 1rem;
+}
+
+.modal h2 { margin-top: 0; font-size: 1.05rem; }
+
+.modal input,
+.modal textarea {
+    width: 100%;
+    padding: 0.6rem;
+    margin-top: 0.35rem;
+    margin-bottom: 0.9rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+/* Modal actions */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 0.6rem;
+}
+
+/* Error banner inside modal */
+.error-banner {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 0.6rem;
+    border-radius: 8px;
+    margin-bottom: 0.8rem;
+}
+
+/* Form rows */
+.form-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.6rem;
+}
+.form-row label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.25rem;
+}
+
+/* Small utility */
+.kv {
+    display:flex;
+    gap:0.5rem;
+    align-items:center;
+}
+.small-muted { font-size:0.85rem; color:var(--muted); }
+
+/* Accessibility / focus */
+button:focus, input:focus, textarea:focus {
+    outline: 3px solid rgba(37,99,235,0.12);
+    outline-offset: 2px;
+}
+
+/* End of stylesheet */

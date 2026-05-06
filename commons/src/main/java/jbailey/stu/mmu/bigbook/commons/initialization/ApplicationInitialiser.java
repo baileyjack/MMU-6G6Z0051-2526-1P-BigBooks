@@ -1,7 +1,7 @@
 package jbailey.stu.mmu.bigbook.commons.initialization;
 
 // Internal Imports
-import jbailey.stu.mmu.bigbook.commons.config.DatabaseConfig;
+import jbailey.stu.mmu.bigbook.commons.config.DatabaseConfiguration;
 import jbailey.stu.mmu.bigbook.commons.dao.BookDAO;
 import jbailey.stu.mmu.bigbook.commons.dao.query.JdbcQueryAdapter;
 import jbailey.stu.mmu.bigbook.commons.factory.ServiceFactory;
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * The application initialiser. This class is the {@link ServletContextListener}, which is executed when the web application starts.
- * It initialises a {@link ServicePort} to centralise access to other components ({@link BookService}, {@link BookDAO}, {@link JdbcQueryAdapter}, {@link DatabaseConfig}, etc.).
+ * It initialises a {@link ServicePort} to centralise access to other components ({@link BookService}, {@link BookDAO}, {@link JdbcQueryAdapter}, {@link DatabaseConfiguration}, etc.).
  * The {@link ServicePort} is stored in the servlet context, making it available to all servlets within an applications lifetime.
  */
 @Slf4j

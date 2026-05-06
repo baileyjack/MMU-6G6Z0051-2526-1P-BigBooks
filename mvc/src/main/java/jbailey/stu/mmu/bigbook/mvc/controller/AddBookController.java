@@ -12,6 +12,7 @@ import jbailey.stu.mmu.bigbook.commons.service.ServicePort;
 import jbailey.stu.mmu.bigbook.commons.service.BookService;
 
 // Logging
+import jbailey.stu.mmu.bigbook.mvc.util.MVCErrorUtility;
 import lombok.extern.slf4j.Slf4j;
 
 // Java
@@ -46,13 +47,9 @@ public class AddBookController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
             request.getRequestDispatcher("/WEB-INF/views/addBook.jsp").forward(request, response);
-        } catch (Exception e) {
-            log.error("AddBook doGet: Unexpected error", e);
-            try {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
-            } catch (IOException ioEx) {
-                log.error("Failed to send error response", ioEx);
-            }
+        } catch (Exception exception) {
+            // ! I have to use own classes for error handling plz fix these
+            MVCErrorUtility.handleServerError(response, log, exception, "An unexpected error occurred while loading the add book form.");
         }
     }
 
@@ -69,7 +66,7 @@ public class AddBookController extends HttpServlet {
             BookService bookService = servicePort.getBookService();
             AddBookFormDataFields formData = extractBookFormData(request);
 
-            // Validate through the BookService Facade which will return a list of errors if any are found.
+            // Validate through the BookService which will return a list of errors if any are found.
             List<String> errors = bookService.validateBook(formData.title, formData.author, formData.date, formData.synopsis);
 
             if (!errors.isEmpty()) {
@@ -84,23 +81,12 @@ public class AddBookController extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/views/addBook.jsp").forward(request, response);
                 return;
             }
-
-            // Delegate creation
+            // Create the book!!!
             bookService.addBook(formData.title, formData.author, formData.date,
                     formData.genresStr, formData.charactersStr, formData.synopsis);
-
-            try {
-                response.sendRedirect("listBooks");
-            } catch (IOException ioEx) {
-                log.error("Failed to redirect after insert", ioEx);
-            }
-        } catch (Exception e) {
-            log.error("AddBook doPost: Unexpected error", e);
-            try {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An unexpected error occurred while adding the book.");
-            } catch (IOException ioEx) {
-                log.error("Failed to send error response", ioEx);
-            }
+            response.sendRedirect("listBooks"); // Redirect!
+        } catch (Exception exception) { // Literally if anything goes wrong
+            MVCErrorUtility.handleServerError(response, log, exception, "An unexpected error occurred while adding the book.");
         }
     }
 

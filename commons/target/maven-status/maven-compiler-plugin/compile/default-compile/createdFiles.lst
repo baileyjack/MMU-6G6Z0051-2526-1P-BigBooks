@@ -1,8 +1,8 @@
+jbailey/stu/mmu/bigbook/commons/config/DatabaseConfiguration.class
 jbailey/stu/mmu/bigbook/commons/service/BookService.class
 jbailey/stu/mmu/bigbook/commons/util/BookUtility.class
 jbailey/stu/mmu/bigbook/commons/dao/BookRowMapper.class
 jbailey/stu/mmu/bigbook/commons/service/DefaultServicePort.class
-jbailey/stu/mmu/bigbook/commons/config/DatabaseConfig.class
 jbailey/stu/mmu/bigbook/commons/dao/query/QueryPort.class
 jbailey/stu/mmu/bigbook/commons/initialization/ApplicationInitialiser.class
 jbailey/stu/mmu/bigbook/commons/service/ServicePort.class

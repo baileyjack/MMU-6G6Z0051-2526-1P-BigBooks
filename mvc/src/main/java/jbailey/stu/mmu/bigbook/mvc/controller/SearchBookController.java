@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jbailey.stu.mmu.bigbook.commons.service.ServicePort;
 import jbailey.stu.mmu.bigbook.commons.model.Book;
 import jbailey.stu.mmu.bigbook.commons.service.BookService;
+import jbailey.stu.mmu.bigbook.mvc.util.MVCErrorUtility;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -90,12 +91,7 @@ public class SearchBookController extends HttpServlet {
 
             request.getRequestDispatcher("/WEB-INF/views/searchResults.jsp").forward(request, response);
         } catch (Exception exception) {
-            log.error("SearchBooks doGet: Unexpected error", exception);
-            try {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An unexpected error occurred while searching for books.");
-            } catch (IOException ioException) {
-                log.error("Failed to send error response", ioException);
-            }
+            MVCErrorUtility.handleServerError(response, log, exception, "An unexpected error occurred while searching for books.");
         }
     }
 }

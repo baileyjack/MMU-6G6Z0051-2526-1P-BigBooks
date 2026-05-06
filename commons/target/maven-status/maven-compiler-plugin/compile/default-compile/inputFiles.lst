@@ -1,4 +1,4 @@
-/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/config/DatabaseConfig.java
+/Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/config/DatabaseConfiguration.java
 /Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/dao/BookDAO.java
 /Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/dao/BookRowMapper.java
 /Users/jackbailey/Desktop/Enterprise Programming Assignment/commons/src/main/java/jbailey/stu/mmu/bigbook/commons/dao/BookSummaryRowMapper.java

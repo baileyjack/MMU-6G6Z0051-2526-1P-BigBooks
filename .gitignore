@@ -27,7 +27,7 @@ Icon?
 hs_err_pid*
 replay_pid*
 
-rest/target/
+target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -73,7 +73,7 @@ secrets.json
 
 *.pdf
 *.doc
-*.docx
+~$*.docx
 *.xls
 *.xlsx
 *.ppt

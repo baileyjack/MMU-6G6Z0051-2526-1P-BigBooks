@@ -2,7 +2,6 @@ package jbailey.stu.mmu.bigbook.rest.format;
 
 import jbailey.stu.mmu.bigbook.rest.serialize.*;
 import jbailey.stu.mmu.bigbook.rest.serialize.json.JsonSerializer;
-import jbailey.stu.mmu.bigbook.rest.serialize.text.TextSerializer;
 import jbailey.stu.mmu.bigbook.rest.serialize.xml.XmlSerializer;
 import jbailey.stu.mmu.bigbook.rest.serialize.yaml.YamlSerializer;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Content negotiation class for REST API responses analyses the HTTP Accept header from client requests and determines
- * the serialiser which is to be used in the response. Supported formats include application/json (default), application/xml, application/yaml text/plain (output only)
+ * the serialiser which is to be used in the response. Supported formats include application/json (default), application/xml, application/yaml
  * The olny things that would need to be extended to add a new content type are this class and the serialiser to use
  */
 @Slf4j
@@ -23,17 +22,16 @@ public class RESTFormatNegotiator {
     public enum ResponseFormat {
         JSON("application/json"),
         XML("application/xml"),
-        YAML("application/x-yaml"),
-        TEXT("text/plain");
+        YAML("application/x-yaml");
 
-        private final String mimeType;
+        private final String negotiatedContentTyoe;
 
-        ResponseFormat(String mimeType) {
-            this.mimeType = mimeType;
+        ResponseFormat(String negotiatedContentTyoe) {
+            this.negotiatedContentTyoe = negotiatedContentTyoe;
         }
 
-        public String getMimeType() {
-            return mimeType;
+        public String getNegotiatedContentTyoe() {
+            return negotiatedContentTyoe;
         }
     }
 
@@ -55,27 +53,22 @@ public class RESTFormatNegotiator {
         }
 
         // Parse Accept header
-        String[] acceptedTypes = acceptHeader.split(",");
+        String[] clientAcceptedTypes = acceptHeader.split(",");
 
-        for (String acceptedType : acceptedTypes) {
-            String cleanType = acceptedType.trim().toLowerCase();
+        for (String acceptedType : clientAcceptedTypes) {
+            String trimmedTypeString = acceptedType.trim().toLowerCase();
 
-            if (cleanType.contains("application/xml") || cleanType.contains("text/xml")) {
+            if (trimmedTypeString.contains("application/xml") || trimmedTypeString.contains("text/xml")) {
                 log.debug("Client accepts XML format.");
                 return ResponseFormat.XML;
-            } else if (cleanType.contains("text/plain")) {
-                log.debug("Client accepts TEXT format.");
-                return ResponseFormat.TEXT;
-            } else if (cleanType.contains("application/json")) {
+            } else if (trimmedTypeString.contains("application/json")) {
                 log.debug("Client accepts JSON format.");
                 return ResponseFormat.JSON;
-            } else if (cleanType.contains("application/x-yaml") || cleanType.contains("application/yaml") || cleanType.contains("text/yaml")) {
+            } else if (trimmedTypeString.contains("application/x-yaml") || trimmedTypeString.contains("application/yaml") || trimmedTypeString.contains("text/yaml")) {
                 log.debug("Client accepts YAML format.");
                 return ResponseFormat.YAML;
             }
-
         }
-
         // If no recognized format, default JSON.
         log.debug("No recognized format in Accept header. Defaulting to JSON.");
         return ResponseFormat.JSON;
@@ -93,7 +86,6 @@ public class RESTFormatNegotiator {
         return switch (format) {
             case JSON -> (ResponseSerializer<T>) new JsonSerializer<>();
             case XML -> (ResponseSerializer<T>) new XmlSerializer<>();
-            case TEXT -> (ResponseSerializer<T>) new TextSerializer<>();
             case YAML -> (ResponseSerializer<T>) new YamlSerializer<>();
         };
     }

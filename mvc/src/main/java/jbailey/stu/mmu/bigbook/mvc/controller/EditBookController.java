@@ -14,6 +14,7 @@ import jbailey.stu.mmu.bigbook.commons.service.BookService;
 import jbailey.stu.mmu.bigbook.commons.util.DateUtility;
 
 // Logging
+import jbailey.stu.mmu.bigbook.mvc.util.MVCErrorUtility;
 import lombok.extern.slf4j.Slf4j;
 
 // Java
@@ -46,38 +47,24 @@ public class EditBookController extends HttpServlet {
             String idParameter = request.getParameter("id");
             if (idParameter == null || idParameter.trim().isEmpty()) {
                 log.warn("EditBook doGet: Missing or empty id parameter");
-                try {
-                    response.sendRedirect("listBooks");
-                } catch (IOException ioException) {
-                    log.error("Failed to redirect on missing id", ioException);
-                }
+                response.sendRedirect(request.getContextPath() + "/listBooks");
                 return;
             }
             int id;
             try {
-                id = Integer.parseInt(idParameter);
+                id = Integer.parseInt(idParameter.trim());
             } catch (NumberFormatException numberFormatException) {
-                log.error("EditBook doGet: Invalid id parameter: {}", idParameter, numberFormatException);
-                try {
-                    response.sendRedirect("listBooks");
-                } catch (IOException ioException) {
-                    log.error("Failed to redirect on invalid id", ioException);
-                }
+                log.warn("EditBook doGet: Invalid id parameter: {}", idParameter);
+                response.sendRedirect(request.getContextPath() + "/listBooks");
                 return;
             }
             Book book = bookService.getBookById(id);
             if (book == null) {
                 log.warn("EditBook doGet: Book not found for id: {}", id);
-                try {
-                    response.sendRedirect("listBooks");
-                } catch (IOException ioException) {
-                    log.error("Failed to redirect on book not found", ioException);
-                }
+                response.sendRedirect(request.getContextPath() + "/listBooks");
                 return;
             }
-            
             // Normalise the date from the database to ISO 8601 format for display purposes
-            // If the date is invalid or in the future, show invalid date message
             String isoDateToNormalise = DateUtility.normaliseDateToISO(book.getDate());
             String dateToDisplay;
             if (isoDateToNormalise == null || isoDateToNormalise.isEmpty()) {
@@ -94,21 +81,13 @@ public class EditBookController extends HttpServlet {
                     dateToDisplay = DateUtility.INVALID_DATE_MESSAGE;
                 }
             }
-
             request.setAttribute("book", book);
             request.setAttribute("genresStr", bookService.serialiseGenres(book.getGenres()));
             request.setAttribute("charactersStr", bookService.serialiseCharacters(book.getCharacters()));
-            // Display either ISO date or the invalid date message in the form
             request.setAttribute("date", dateToDisplay != null ? dateToDisplay : "");
-            
             request.getRequestDispatcher("/WEB-INF/views/editBook.jsp").forward(request, response);
         } catch (Exception e) {
-            log.error("EditBook doGet: Unexpected error", e);
-            try {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
-            } catch (IOException ioException) {
-                log.error("Failed to send error response", ioException);
-            }
+            MVCErrorUtility.handleServerError(response, log, e, "An unexpected error occurred while loading the edit form.");
         }
     }
 
@@ -116,10 +95,9 @@ public class EditBookController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            request.setCharacterEncoding("UTF-8");
             BookService bookService = servicePort.getBookService();
             EditBookFormDataFields formData = extractEditBookFormData(request);
-
-            // Validate input via the Faxade
             List<String> errors = bookService.validateBook(formData.title, formData.author, formData.date, formData.synopsis);
 
             if (!errors.isEmpty()) {
@@ -136,23 +114,11 @@ public class EditBookController extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/views/editBook.jsp").forward(request, response);
                 return;
             }
-
-            // Delegate update to the Facade
             bookService.updateBook(formData.id, formData.title, formData.author, formData.date,
                     formData.genresStr, formData.charactersStr, formData.synopsis);
-
-            try {
-                response.sendRedirect("listBooks");
-            } catch (IOException ioException) {
-                log.error("Failed to redirect after update", ioException);
-            }
+            response.sendRedirect(request.getContextPath() + "/listBooks");
         } catch (Exception exception) {
-            log.error("EditBook doPost: Unexpected error", exception);
-            try {
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An unexpected error occurred while updating the book.");
-            } catch (IOException ioException) {
-                log.error("Failed to send error response", ioException);
-            }
+            MVCErrorUtility.handleServerError(response, log, exception, "An unexpected error occurred while updating the book.");
         }
     }
 

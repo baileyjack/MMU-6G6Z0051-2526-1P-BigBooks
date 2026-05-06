@@ -1,7 +1,7 @@
 package jbailey.stu.mmu.bigbook.commons.dao.query;
 
 // Internal Imports
-import jbailey.stu.mmu.bigbook.commons.config.DatabaseConfig;
+import jbailey.stu.mmu.bigbook.commons.config.DatabaseConfiguration;
 import jbailey.stu.mmu.bigbook.commons.dao.DatabaseRowMapper;
 
 // Java Imports
@@ -33,7 +33,7 @@ public class JdbcQueryAdapter implements QueryPort {
      */
     @Override
     public <T> List<T> queryList(String sql, DatabaseRowMapper<T> rowMapper) throws SQLException {
-        try (Connection connection = DatabaseConfig.getConnection();
+        try (Connection connection = DatabaseConfiguration.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
             return mapList(resultSet, rowMapper);
@@ -53,7 +53,7 @@ public class JdbcQueryAdapter implements QueryPort {
     @Override
     public <T> List<T> queryList(String sql, PreparedStatementParameterBinder statementParameterBinder, DatabaseRowMapper<T> rowMapper)
             throws SQLException {
-        try (Connection connection = DatabaseConfig.getConnection();
+        try (Connection connection = DatabaseConfiguration.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statementParameterBinder.bind(statement);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -75,7 +75,7 @@ public class JdbcQueryAdapter implements QueryPort {
     @Override
     public <T> T queryOne(String sql, PreparedStatementParameterBinder statementParameterBinder, DatabaseRowMapper<T> rowMapper)
             throws SQLException {
-        try (Connection connection = DatabaseConfig.getConnection();
+        try (Connection connection = DatabaseConfiguration.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statementParameterBinder.bind(statement);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -96,7 +96,7 @@ public class JdbcQueryAdapter implements QueryPort {
      */
     @Override
     public int update(String sql, PreparedStatementParameterBinder statementParameterBinder) throws SQLException {
-        try (Connection connection = DatabaseConfig.getConnection();
+        try (Connection connection = DatabaseConfiguration.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statementParameterBinder.bind(statement);
             return statement.executeUpdate();
@@ -113,7 +113,7 @@ public class JdbcQueryAdapter implements QueryPort {
      */
     @Override
     public int queryForInt(String sql) throws SQLException {
-        try (Connection connection = DatabaseConfig.getConnection();
+        try (Connection connection = DatabaseConfiguration.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
             return resultSet.next() ? resultSet.getInt(1) : 0;
@@ -130,7 +130,7 @@ public class JdbcQueryAdapter implements QueryPort {
      */
     @Override
     public int queryForInt(String sql, PreparedStatementParameterBinder statementParameterBinder) throws SQLException {
-        try (Connection connection = DatabaseConfig.getConnection();
+        try (Connection connection = DatabaseConfiguration.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statementParameterBinder.bind(statement);
             try (ResultSet resultSet = statement.executeQuery()) {

@@ -15,9 +15,9 @@ import org.springframework.context.annotation.Bean;
 
 /**
  * Main application entrypoint for the REST API.
- * Bootstraps the {@link SpringApplication Spring Boot} application with embedded Tomcat,
- * and registers the {@link HttpServlet} manually for deployment as a Spring JAR.
- * Uses Spring for DI to wire commons components framework agnostically.
+ * Bootstraps the {@link SpringApplication} with embedded Tomcat,
+ * and registers {@link HttpServlet} for deployment as am app.
+ * Uses Spring for dep. inversion and to wire commons components without a framework required.
  */
 @SpringBootApplication
 public class BigBookAPI {

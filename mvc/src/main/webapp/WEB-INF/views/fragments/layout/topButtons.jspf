@@ -1,11 +1,12 @@
 <%
-    // top-right link bar used by multiple JSP views.
+    // top-right link used by JSP views to send user to other places where neede
     String primaryButtonLabel = (String) request.getAttribute("primaryButtonLabel");
     String primaryButtonPath = (String) request.getAttribute("primaryButtonPath");
     String secondaryButtonLabel = (String) request.getAttribute("secondaryButtonLabel");
     String secondaryButtonPath = (String) request.getAttribute("secondaryButtonPath");
 %>
 <div class="top-buttons">
+    <!-- only attempt the requests if path not null which protects the service from err but let's be real how would that every happeen? -->
     <% if (primaryButtonPath != null && primaryButtonLabel != null) { %>
     <a href="<%= request.getContextPath() + primaryButtonPath %>"><%= primaryButtonLabel %></a>
     <% } %>

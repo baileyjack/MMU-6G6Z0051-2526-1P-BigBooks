@@ -1,11 +1,16 @@
 package jbailey.stu.mmu.bigbook.mvc.config;
 
+// Java Imports
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
+
+// Internal Imports
 import jbailey.stu.mmu.bigbook.commons.factory.ServiceFactory;
 import jbailey.stu.mmu.bigbook.commons.service.ServicePort;
+
+// External Imports
 import lombok.extern.slf4j.Slf4j;
 
 /**

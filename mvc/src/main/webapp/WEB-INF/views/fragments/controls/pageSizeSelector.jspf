@@ -1,4 +1,4 @@
-<!-- For page sizes -->
+<!-- Selection Fragment for choosing list count fo -->
 <% String pageSizeFormAction = (String) request.getAttribute("pageSizeFormAction");
     if (pageSizeFormAction == null || pageSizeFormAction.isEmpty()) {
         pageSizeFormAction = request.getContextPath() + "/bigbookmvc/books";
@@ -7,6 +7,7 @@
     String pageSizeHiddenFieldName = (String) request.getAttribute("pageSizeHiddenFieldName");
     String pageSizeHiddenFieldValue = (String) request.getAttribute("pageSizeHiddenFieldValue");
 
+    // Default 10 if none are set
     Integer pageSizeAttribute = (Integer) request.getAttribute("pageSize");
     int selectedPageSize = pageSizeAttribute != null ? pageSizeAttribute : 10; %>
 
@@ -18,6 +19,7 @@
 
         <label for="pageSize">Books per page:</label>
         <select name="pageSize" id="pageSize">
+            <!-- add any options we want on here really -->
             <option value="5" <%= selectedPageSize == 5 ? "selected" : "" %>>5</option>
             <option value="10" <%= selectedPageSize == 10 ? "selected" : "" %>>10</option>
             <option value="20" <%= selectedPageSize == 20 ? "selected" : "" %>>20</option>

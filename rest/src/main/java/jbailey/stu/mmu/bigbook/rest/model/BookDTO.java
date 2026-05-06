@@ -1,15 +1,14 @@
 package jbailey.stu.mmu.bigbook.rest.model;
 
+// Internal Imports
 import jbailey.stu.mmu.bigbook.commons.model.Book;
+
+// External Imports
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlElementWrapper;
-import jakarta.xml.bind.annotation.XmlRootElement;
 
+// Java Imports
 import java.util.List;
 
 // todo: move this / explain in the write-up so I can delete it from here :)

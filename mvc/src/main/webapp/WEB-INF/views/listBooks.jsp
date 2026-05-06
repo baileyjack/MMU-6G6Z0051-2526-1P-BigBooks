@@ -53,8 +53,8 @@
     <%
         List<Book> books = (List<Book>) request.getAttribute("books");
         if (books != null && !books.isEmpty()) {
-            for (Book b : books) {
-                request.setAttribute("bookItem", b);
+            for (Book everyBook : books) {
+                request.setAttribute("bookItem", everyBook);
                 request.setAttribute("showBookActions", Boolean.TRUE);
     %>
     <%@ include file="/WEB-INF/views/fragments/cards/bookItem.jspf" %>

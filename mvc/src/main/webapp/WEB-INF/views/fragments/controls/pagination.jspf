@@ -1,3 +1,4 @@
+<!-- Makes a full pagination bar, inc. previous/next buttons and a window of page number links, based on values passed in the request. -->
 <%
 	Integer currentPageAttribute = (Integer) request.getAttribute("currentPage");
 	Integer totalPagesAttribute = (Integer) request.getAttribute("totalPages");

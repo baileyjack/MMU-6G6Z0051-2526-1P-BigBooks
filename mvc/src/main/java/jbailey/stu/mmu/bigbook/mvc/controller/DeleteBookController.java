@@ -7,16 +7,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-// DI and Service layer
+// Internal Imports
 import jbailey.stu.mmu.bigbook.commons.service.ServicePort;
 import jbailey.stu.mmu.bigbook.commons.service.BookService;
-
-// Logging
 import jbailey.stu.mmu.bigbook.mvc.util.MVCErrorUtility;
-import lombok.extern.slf4j.Slf4j;
 
-// Java
-import java.io.IOException;
+// External Imports
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Controller for deleting a book from the database.

@@ -1,5 +1,4 @@
-<!-- Book Item Fragment which gets a book object as request attribute "bookItem" and renders a card with book details. -->
-
+<!-- A sinhle book item to be displayed to the user -->
 <%@ page import="jbailey.stu.mmu.bigbook.commons.model.Book" %>
 <%@ page import="jbailey.stu.mmu.bigbook.commons.model.Genre" %>
 <%@ page import="jbailey.stu.mmu.bigbook.commons.model.Character" %>
@@ -7,6 +6,7 @@
 <%@ page import="java.util.List" %>
 
 <%
+    // Retrieves a book, checks whether actions should be shown, validates the date and then sets the date string to display.
     Book bookItemData = (Book) request.getAttribute("bookItem");
     boolean showBookItemActions = true;
     Object showBookItemsActionsAttribute = request.getAttribute("showBookActions");
@@ -67,12 +67,12 @@
             <div class="detail-value">
                 <% List<Genre> genres = bookItemData.getGenres();
                     if (genres != null && !genres.isEmpty()) {
-                        for (Genre g : genres) {
-                %> <span class="pill"><%= g.getName() %></span>
+                        for (Genre eachGenre : genres) {
+                %> <span class="pill"><%= eachGenre.getName() %></span>
                 <%
                         }
                     } else {
-                %> No genres listed <%
+                %> No genres <%
                     } %>
             </div>
         </div>
@@ -82,8 +82,8 @@
             <div class="detail-value">
                 <% List<Character> characters = bookItemData.getCharacters();
                     if (characters != null && !characters.isEmpty()) {
-                        for (Character c : characters) {
-                %> <span class="pill"><%= c.getName() %></span>
+                        for (Character eachCharacter : characters) {
+                %> <span class="pill"><%= eachCharacter.getName() %></span>
                 <%
                         }
                     } else { %> No characters listed <%
@@ -94,7 +94,7 @@
         <div class="detail-row">
             <div class="detail-label">Synopsis:</div>
             <div class="detail-value">
-                <%= bookItemData.getSynopsis() != null && !bookItemData.getSynopsis().isEmpty() ? bookItemData.getSynopsis() : "No synopsis available" %>
+                <%= bookItemData.getSynopsis() != null && !bookItemData.getSynopsis().isEmpty() ? bookItemData.getSynopsis() : "No synopsis" %>
             </div>
         </div>
 

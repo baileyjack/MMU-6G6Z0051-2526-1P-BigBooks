@@ -1,12 +1,14 @@
 package jbailey.stu.mmu.bigbook.mvc.controller.frontcontroller.commands;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+// Internal Imports
 import jbailey.stu.mmu.bigbook.mvc.controller.frontcontroller.CommandResult;
 import jbailey.stu.mmu.bigbook.mvc.controller.frontcontroller.ControllerCommand;
 import jbailey.stu.mmu.bigbook.commons.model.Book;
 import jbailey.stu.mmu.bigbook.commons.service.BookService;
 
+// Java Imports
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -22,11 +24,9 @@ public class ListBooksCommand extends AbstractBaseBookCommand implements Control
     public CommandResult handleCommandRequest(HttpServletRequest request, HttpServletResponse response) {
         int page = parseNonNegativeInt(request.getParameter("page"), 0);
         int pageSize = parsePositiveInt(request.getParameter("pageSize"), 10);
-
         List<Book> books = bookService.getAllBooksPaginated(page, pageSize);
         int totalBooks = bookService.getTotalBookCount();
         int totalPages = (int) Math.ceil((double) totalBooks / pageSize);
-
         request.setAttribute("books", books);
         request.setAttribute("currentPage", page);
         request.setAttribute("pageSize", pageSize);

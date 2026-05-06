@@ -1,9 +1,11 @@
 package jbailey.stu.mmu.bigbook.rest.model;
 
+// internal Imports
 import jbailey.stu.mmu.bigbook.commons.model.Book;
 import jbailey.stu.mmu.bigbook.commons.model.Character;
 import jbailey.stu.mmu.bigbook.commons.model.Genre;
 
+// External Imports
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,21 +42,21 @@ public class BookMapper {
     /**
      * Converts a {@link BookDTO} from requests to a {@link Book} object.
      *
-     * @param dto is the {@link BookDTO} to convert
+     * @param bookDTO is the {@link BookDTO} to convert
      * @return a {@link Book} object
      */
-    public static Book fromDTO(BookDTO dto) {
-        if (dto == null) {
+    public static Book fromDTO(BookDTO bookDTO) {
+        if (bookDTO == null) {
             return null;
         }
         return new Book(
-            dto.getId(),
-            dto.getTitle(),
-            dto.getAuthor(),
-            dto.getDate(),
-            dto.getGenres() != null ? dto.getGenres().stream().map(name -> new Genre(name)).collect(Collectors.toList()) : null,
-            dto.getCharacters() != null ? dto.getCharacters().stream().map(name -> new Character(name)).collect(Collectors.toList()) : null,
-            dto.getSynopsis()
+            bookDTO.getId(),
+            bookDTO.getTitle(),
+            bookDTO.getAuthor(),
+            bookDTO.getDate(),
+            bookDTO.getGenres() != null ? bookDTO.getGenres().stream().map(name -> new Genre(name)).collect(Collectors.toList()) : null,
+            bookDTO.getCharacters() != null ? bookDTO.getCharacters().stream().map(name -> new Character(name)).collect(Collectors.toList()) : null,
+            bookDTO.getSynopsis()
         );
     }
 

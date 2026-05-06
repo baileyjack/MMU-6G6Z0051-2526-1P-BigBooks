@@ -1,13 +1,15 @@
 package jbailey.stu.mmu.bigbook.mvc.controller.frontcontroller.commands;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+// Internal IMports
 import jbailey.stu.mmu.bigbook.mvc.controller.frontcontroller.CommandResult;
 import jbailey.stu.mmu.bigbook.mvc.controller.frontcontroller.ControllerCommand;
 import jbailey.stu.mmu.bigbook.commons.model.Book;
 import jbailey.stu.mmu.bigbook.commons.service.BookService;
 import jbailey.stu.mmu.bigbook.commons.util.DateUtility;
 
+// Java Imports
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ public class HomeCommand extends AbstractBaseBookCommand implements ControllerCo
             boolean isValid = false;
             if (isoDate != null && !isoDate.isEmpty()) {
                 try {
-                    // Ensure the book doesn't have a date after today to avoid invalid entries
+                    // Cgeck that the book doesn't have a date after today to avoid invalid entries
                     LocalDate dateParse = LocalDate.parse(isoDate);
                     isValid = !dateParse.isAfter(LocalDate.now());
                 } catch (Exception exception) {

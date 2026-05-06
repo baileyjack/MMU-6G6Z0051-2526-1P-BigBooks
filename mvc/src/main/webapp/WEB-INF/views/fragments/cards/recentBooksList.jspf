@@ -1,15 +1,16 @@
 <%@ page import="jbailey.stu.mmu.bigbook.commons.model.Book" %>
 <%@ page import="java.util.List" %>
 <%
-    List<Book> recentBooks = (List<Book>) request.getAttribute("recentBooks");
+    List<Book> recentBooksLIst = (List<Book>) request.getAttribute("recentBooks");
 %>
 <div class="recent-books">
     <h2>Most Recent Books</h2>
 
-    <% if (recentBooks != null && !recentBooks.isEmpty()) { %>
-    <% for (Book recentBook : recentBooks) {
+    <% if (recentBooksLIst != null && !recentBooksLIst.isEmpty()) { %>
+    <% for (Book recentBook : recentBooksLIst) {
             request.setAttribute("bookItem", recentBook);
             request.setAttribute("showBookActions", Boolean.TRUE); %>
+    <!-- Add one book item for each recent book for modularity -->
     <%@ include file="/WEB-INF/views/fragments/cards/bookItem.jspf" %>
     <% } %>
     <% request.removeAttribute("bookItem");

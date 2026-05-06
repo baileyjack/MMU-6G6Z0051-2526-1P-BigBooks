@@ -1,11 +1,7 @@
-// src/serialization.js
-// Serialization and parsing helpers for JSON, XML and YAML.
-// Robust XML -> JS conversion that handles multiple <data> siblings and many backend shapes.
-
 import YAML from "js-yaml";
 
-export function mediaTypeToMime(type) {
-    switch (type) {
+export function mediaTypeSelector(givenType) {
+    switch (givenType) {
         case "json": return "application/json";
         case "xml": return "application/xml";
         case "yaml": return "application/x-yaml";
@@ -13,8 +9,8 @@ export function mediaTypeToMime(type) {
     }
 }
 
-function escapeXml(str = "") {
-    return String(str)
+function escapeCharsForXml(string = "") {
+    return String(string)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -31,26 +27,32 @@ export function serializeBook(book, type) {
     }
 }
 
+/**
+ * Returns the full XML Book Instance for one BookDTO
+ * @param book the book...
+ * @returns {string}
+ */
 function bookToXml(book) {
-    const genres = (book.genres || []).map((g) => `<genre>${escapeXml(g)}</genre>`).join("");
-    const characters = (book.characters || []).map((c) => `<character>${escapeXml(c)}</character>`).join("");
-
+    const genres = (book.genres || []).map((g) => `<genre>${escapeCharsForXml(g)}</genre>`).join("");
+    const characters = (book.characters || []).map((c) => `<character>${escapeCharsForXml(c)}</character>`).join("");
     return `
-<BookDTO>
-  ${book.id != null ? `<id>${escapeXml(book.id)}</id>` : ""}
-  <title>${escapeXml(book.title)}</title>
-  <author>${escapeXml(book.author)}</author>
-  <date>${escapeXml(book.date)}</date>
-  <genres>${genres}</genres>
-  <characters>${characters}</characters>
-  <synopsis>${escapeXml(book.synopsis || "")}</synopsis>
-</BookDTO>`.trim();
+        <BookDTO>
+          ${book.id != null ? `<id>${escapeCharsForXml(book.id)}</id>` : ""}
+          <title>${escapeCharsForXml(book.title)}</title>
+          <author>${escapeCharsForXml(book.author)}</author>
+          <date>${escapeCharsForXml(book.date)}</date>
+          <genres>${genres}</genres>
+          <characters>${characters}</characters>
+          <synopsis>${escapeCharsForXml(book.synopsis || "")}</synopsis>
+        </BookDTO>`.trim();
 }
 
-// parseResponse expects an object with text() method
-export async function parseResponse(res, type) {
-    const text = await res.text();
 
+/**
+ * Expects a type of "json", "xml", or "yaml" and attempts to parse the text accordingly.
+ */
+export async function parseResponse(response, type) {
+    const text = await response.text();
     switch (type) {
         case "json":
             try { return JSON.parse(text); } catch (e) { return text; }
@@ -107,8 +109,8 @@ function xmlToJs(xmlString) {
             synopsis: getText("synopsis"),
         };
     }
-
-    // Utility: if a NodeList contains Book-like nodes, map them
+    
+    //* Maps objects to Books
     function mapNodesToBooks(nodes) {
         const arr = Array.from(nodes).map(nodeToBook);
         return arr;

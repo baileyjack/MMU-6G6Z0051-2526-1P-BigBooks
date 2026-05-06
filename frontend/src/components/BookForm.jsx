@@ -1,39 +1,38 @@
-// src/components/BookFormModal.jsx
 import { useState, useEffect } from "react";
 
-export default function BookFormModal({ mode, book: initialBook, onClose, onSubmit }) {
+export default function BookForm({ mode: formMode, book: startingBookVal, onClose, onSubmit }) {
     const [book, setBook] = useState({
-        id: initialBook?.id ?? null,
-        title: initialBook?.title ?? "",
-        author: initialBook?.author ?? "",
-        date: initialBook?.date ?? "",
-        genres: (initialBook?.genres || []).join(", "),
-        characters: (initialBook?.characters || []).join(", "),
-        synopsis: initialBook?.synopsis ?? "",
+        id: startingBookVal?.id ?? null,
+        title: startingBookVal?.title ?? "",
+        author: startingBookVal?.author ?? "",
+        date: startingBookVal?.date ?? "",
+        genres: (startingBookVal?.genres || []).join(", "),
+        characters: (startingBookVal?.characters || []).join(", "),
+        synopsis: startingBookVal?.synopsis ?? "",
     });
     const [error, setError] = useState("");
 
     useEffect(() => {
         setBook({
-            id: initialBook?.id ?? null,
-            title: initialBook?.title ?? "",
-            author: initialBook?.author ?? "",
-            date: initialBook?.date ?? "",
-            genres: (initialBook?.genres || []).join(", "),
-            characters: (initialBook?.characters || []).join(", "),
-            synopsis: initialBook?.synopsis ?? "",
+            id: startingBookVal?.id ?? null,
+            title: startingBookVal?.title ?? "",
+            author: startingBookVal?.author ?? "",
+            date: startingBookVal?.date ?? "",
+            genres: (startingBookVal?.genres || []).join(", "),
+            characters: (startingBookVal?.characters || []).join(", "),
+            synopsis: startingBookVal?.synopsis ?? "",
         });
         setError("");
-    }, [initialBook]);
+    }, [startingBookVal]);
 
-    const handleChange = (field) => (e) => setBook((p) => ({ ...p, [field]: e.target.value }));
+    const handleChange = (field) => (err) => setBook((p) => ({ ...p, [field]: err.target.value }));
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (promise) => {
+        promise.preventDefault();
         setError("");
 
         const confirmed = window.confirm(
-            mode === "create" ? "Create this book?" : "Save changes to this book?"
+            formMode === "create" ? "Create this book?" : "Save changes to this book?"
         );
         if (!confirmed) return;
 
@@ -47,59 +46,54 @@ export default function BookFormModal({ mode, book: initialBook, onClose, onSubm
                 characters: book.characters ? book.characters.split(",").map((c) => c.trim()).filter(Boolean) : [],
                 synopsis: book.synopsis.trim(),
             };
-
             await onSubmit(payload);
-        } catch (err) {
-            setError(err?.message || "Failed to submit");
+        } catch (exception) {
+            setError(exception?.message || "Failed to submit");
         }
     };
 
+    /**
+     * BUILD THE FORM!!! :)
+     */
     return (
-        <div className="modal-backdrop">
-            <div className="modal">
-                <h2>{mode === "create" ? "Add Book" : "Edit Book"}</h2>
+        <div className="form-backdrop">
+            <div className="formview">
+                <h2>{formMode === "create" ? "Add Book" : "Edit Book"}</h2>
                 {error && <div className="error-banner">{error}</div>}
                 <form onSubmit={handleSubmit} className="book-form">
-                    {mode === "edit" && (
+                    {formMode === "edit" && (
                         <div className="form-row">
                             <label>ID</label>
                             <input type="text" value={book.id ?? ""} disabled />
                         </div>
                     )}
-
                     <div className="form-row">
                         <label>Title *</label>
                         <input type="text" value={book.title} onChange={handleChange("title")} required />
                     </div>
-
                     <div className="form-row">
                         <label>Author *</label>
                         <input type="text" value={book.author} onChange={handleChange("author")} required />
                     </div>
-
                     <div className="form-row">
                         <label>Date (YYYY-MM-DD)</label>
                         <input type="text" value={book.date} onChange={handleChange("date")} placeholder="YYYY-MM-DD" />
                     </div>
-
                     <div className="form-row">
                         <label>Genres (comma-separated)</label>
                         <input type="text" value={book.genres} onChange={handleChange("genres")} />
                     </div>
-
                     <div className="form-row">
                         <label>Characters (comma-separated)</label>
                         <input type="text" value={book.characters} onChange={handleChange("characters")} />
                     </div>
-
                     <div className="form-row">
                         <label>Synopsis</label>
                         <textarea value={book.synopsis} onChange={handleChange("synopsis")} rows={4} />
                     </div>
-
-                    <div className="modal-actions">
+                    <div className="form-actions">
                         <button type="button" className="secondary-btn" onClick={onClose}>Cancel</button>
-                        <button type="submit" className="primary-btn">{mode === "create" ? "Add Book" : "Save Changes"}</button>
+                        <button type="submit" className="primary-btn">{formMode === "create" ? "Add Book" : "Save Changes"}</button>
                     </div>
                 </form>
             </div>

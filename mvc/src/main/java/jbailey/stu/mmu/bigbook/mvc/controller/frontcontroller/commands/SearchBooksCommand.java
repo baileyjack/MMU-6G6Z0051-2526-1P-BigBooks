@@ -1,11 +1,14 @@
 package jbailey.stu.mmu.bigbook.mvc.controller.frontcontroller.commands;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+// Internal Imports
+import jbailey.stu.mmu.bigbook.commons.service.BookService;
 import jbailey.stu.mmu.bigbook.mvc.controller.frontcontroller.CommandResult;
 import jbailey.stu.mmu.bigbook.mvc.controller.frontcontroller.ControllerCommand;
 import jbailey.stu.mmu.bigbook.commons.model.Book;
 
+// Java Imports
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -13,7 +16,7 @@ import java.util.List;
  */
 public class SearchBooksCommand extends AbstractBaseBookCommand implements ControllerCommand {
 
-    public SearchBooksCommand(jbailey.stu.mmu.bigbook.commons.service.BookService bookService) {
+    public SearchBooksCommand(BookService bookService) {
         super(bookService);
     }
 

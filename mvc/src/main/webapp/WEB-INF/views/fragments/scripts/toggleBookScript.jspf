@@ -1,5 +1,5 @@
 <script>
-    // Shared for expanding/collapsing the reusable book card component.
+    // Just a pretty little script for toggling between the expanded and the regular book entries inthe application
     function toggleBook(header) {
         header.classList.toggle('expanded');
         const details = header.nextElementSibling;

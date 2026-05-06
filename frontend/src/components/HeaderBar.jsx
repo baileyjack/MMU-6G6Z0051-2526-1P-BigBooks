@@ -1,6 +1,3 @@
-// src/components/HeaderBar.jsx
-// Header with search, request/response toggles and an Add (+) button.
-
 export default function HeaderBar({
                                       searchQuery,
                                       onSearchChange,
@@ -24,7 +21,7 @@ export default function HeaderBar({
                     className="search-input"
                     placeholder="Search by title or author..."
                     value={searchQuery || ""}
-                    onChange={(e) => onSearchChange(e.target.value)}
+                    onChange={(changeEvent) => onSearchChange(changeEvent.target.value)}
                 />
             </div>
 
@@ -35,21 +32,18 @@ export default function HeaderBar({
                         <button
                             key={t}
                             className={`toggle-btn ${requestType === t ? "active" : ""}`}
-                            onClick={() => onRequestTypeChange(t)}
-                        >
+                            onClick={() => onRequestTypeChange(t)}>
                             {t.toUpperCase()}
                         </button>
                     ))}
                 </div>
-
                 <div className="btn-group">
                     <span className="group-label">Response</span>
                     {["json", "xml", "yaml"].map((t) => (
                         <button
                             key={t}
                             className={`toggle-btn ${responseType === t ? "active" : ""}`}
-                            onClick={() => onResponseTypeChange(t)}
-                        >
+                            onClick={() => onResponseTypeChange(t)}>
                             {t.toUpperCase()}
                         </button>
                     ))}
@@ -62,6 +56,7 @@ export default function HeaderBar({
                     <button className={`toggle-btn ${sortMode === "date-desc" ? "active" : ""}`} onClick={() => onSortChange("date-desc")}>Date ↓</button>
                 </div>
 
+                <!-- todo: DONT FORGET TO ADD AN ADD OPTION FOR JS -->
                 <button
                     onClick={onAddBook}
                     title="Add Book"
@@ -77,11 +72,8 @@ export default function HeaderBar({
                         color: "white",
                         fontSize: 20,
                         cursor: "pointer",
-                        boxShadow: "0 4px 12px rgba(37,99,235,0.18)",
-                    }}
-                    aria-label="Add book"
-                >
-                    +
+                        boxShadow: "0 4px 12px rgba(37,99,235,0.18)",}}
+                    aria-label="Add book">+
                 </button>
             </div>
         </header>

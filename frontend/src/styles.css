@@ -1,8 +1,3 @@
-/* ------------------------------------------------------------
-   styles.css — consolidated light theme with fixed floating header
-   Paste into: src/styles.css
------------------------------------------------------------- */
-
 :root {
     --bg: #f5f5f8;
     --bg-elevated: #ffffff;
@@ -20,7 +15,6 @@
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-/* Reset / base */
 * { box-sizing: border-box; }
 html, body, #root { height: 100%; }
 body {
@@ -33,12 +27,6 @@ body {
     font-size: 15px;
 }
 
-/* ------------------------------------------------------------
-   HEADER BAR (fixed floating header)
-   - position: fixed keeps it floating above content
-   - width: 100% ensures it spans the viewport
-   - high z-index keeps it above panels/modals
------------------------------------------------------------- */
 .header-bar {
     position: fixed;
     top: 0;
@@ -56,7 +44,6 @@ body {
     box-shadow: 0 2px 8px rgba(15,23,42,0.04);
 }
 
-/* Ensure header content doesn't wrap awkwardly */
 .header-left h1 {
     font-size: 1.25rem;
     font-weight: 600;
@@ -85,9 +72,6 @@ body {
     border-color: var(--accent);
 }
 
-/* ------------------------------------------------------------
-   BUTTON GROUPS / TOGGLES
------------------------------------------------------------- */
 .header-right { display:flex; align-items:center; gap:0.75rem; }
 
 .btn-group {
@@ -123,11 +107,6 @@ body {
     color: var(--accent);
 }
 
-/* ------------------------------------------------------------
-   MAIN LAYOUT
-   - Add top padding equal to header height + small gap so content
-     is not hidden under the fixed header.
------------------------------------------------------------- */
 .main-layout {
     display: flex;
     padding: calc(var(--header-height) + 1rem) 1.5rem 1.5rem 1.5rem;
@@ -139,9 +118,6 @@ body {
     margin-right: var(--panel-width);
 }
 
-/* ------------------------------------------------------------
-   BOOK TABLE
------------------------------------------------------------- */
 .book-table-wrapper {
     flex: 1;
     background: var(--bg-elevated);
@@ -176,7 +152,7 @@ body {
     font-size: 0.85rem;
 }
 
-.book-table td:nth-child(2) { /* Title column */
+.book-table td:nth-child(2) {
     white-space: nowrap;
     max-width: 420px;
 }
@@ -186,15 +162,11 @@ body {
     cursor: pointer;
 }
 
-/* Responsive: allow title to wrap on small screens */
 @media (max-width: 900px) {
     .book-table td, .book-table th { white-space: normal; }
-    .header-center { display: none; } /* hide search on small screens to save space */
+    .header-center { display: none; } /* hides the search on smaller views */
 }
 
-/* ------------------------------------------------------------
-   PAGINATION
------------------------------------------------------------- */
 .pagination-bar {
     display: flex;
     justify-content: space-between;
@@ -217,11 +189,7 @@ body {
     cursor: not-allowed;
 }
 
-/* ------------------------------------------------------------
-   DETAIL PANEL
-   - top uses header height so it sits below the fixed header
------------------------------------------------------------- */
-/* detail panel viewport sizing and internal scroll */
+
 .detail-panel {
     position: fixed;
     top: var(--header-height);
@@ -238,12 +206,10 @@ body {
     z-index: 40;
 }
 
-/* open state */
 .detail-panel.open {
     transform: translateX(0);
 }
 
-/* internal container that scrolls */
 .detail-panel .detail-inner {
     height: calc(100vh - var(--header-height));
     display: flex;
@@ -252,26 +218,22 @@ body {
     overflow: hidden;
 }
 
-/* header stays at top of panel */
 .detail-panel .detail-header {
     flex: 0 0 auto;
     margin-bottom: 0.75rem;
 }
 
-/* body scrolls */
 .detail-panel .detail-body {
     flex: 1 1 auto;
     overflow: auto;
-    padding-right: 0.25rem; /* room for scrollbar */
+    padding-right: 0.25rem; /* needed to add room for scrollbar */
 }
 
-/* footer pinned to bottom */
 .detail-panel .detail-footer {
     flex: 0 0 auto;
     margin-top: 0.75rem;
 }
 
-/* Detail internals */
 .detail-header {
     display: flex;
     justify-content: space-between;
@@ -313,9 +275,6 @@ body {
     justify-content: flex-end;
 }
 
-/* ------------------------------------------------------------
-   GENERIC BUTTON CLASSES
------------------------------------------------------------- */
 .primary-btn,
 .primary-btn:active {
     background: var(--accent);
@@ -343,10 +302,7 @@ body {
     cursor: pointer;
 }
 
-/* ------------------------------------------------------------
-   MODAL (form)
------------------------------------------------------------- */
-.modal-backdrop {
+.form-backdrop {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.35);
@@ -356,7 +312,7 @@ body {
     z-index: 50;
 }
 
-.modal {
+.formview {
     background: white;
     padding: 1.6rem;
     border-radius: var(--radius);
@@ -367,15 +323,15 @@ body {
     overflow: auto;
 }
 
-.modal.small {
+.formview.small {
     width: 360px;
     padding: 1rem;
 }
 
-.modal h2 { margin-top: 0; font-size: 1.05rem; }
+.formview h2 { margin-top: 0; font-size: 1.05rem; }
 
-.modal input,
-.modal textarea {
+.formview input,
+.formview textarea {
     width: 100%;
     padding: 0.6rem;
     margin-top: 0.35rem;
@@ -386,15 +342,13 @@ body {
     color: var(--text);
 }
 
-/* Modal actions */
-.modal-actions {
+.form-actions {
     display: flex;
     justify-content: flex-end;
     gap: 0.6rem;
     margin-top: 0.6rem;
 }
 
-/* Error banner inside modal */
 .error-banner {
     background: #fee2e2;
     color: #991b1b;
@@ -403,7 +357,6 @@ body {
     margin-bottom: 0.8rem;
 }
 
-/* Form rows */
 .form-row {
     display: flex;
     flex-direction: column;
@@ -415,7 +368,6 @@ body {
     margin-bottom: 0.25rem;
 }
 
-/* Small utility */
 .kv {
     display:flex;
     gap:0.5rem;
@@ -423,10 +375,7 @@ body {
 }
 .small-muted { font-size:0.85rem; color:var(--muted); }
 
-/* Accessibility / focus */
 button:focus, input:focus, textarea:focus {
     outline: 3px solid rgba(37,99,235,0.12);
     outline-offset: 2px;
 }
-
-/* End of stylesheet */

@@ -1,23 +1,21 @@
 package jbailey.stu.mmu.bigbook.mvc.controller;
 
-// Jakarta Servlet imports
+//  Java Imports
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
 import jakarta.servlet.http.HttpServletResponse;
 
-// DI and Service layer
+// Internal Imports
 import jbailey.stu.mmu.bigbook.commons.service.ServicePort;
 import jbailey.stu.mmu.bigbook.commons.service.BookService;
-
-// Logging
 import jbailey.stu.mmu.bigbook.mvc.util.MVCErrorUtility;
+
+// External Imports
 import lombok.extern.slf4j.Slf4j;
 
-// Java
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Controller for adding a book to the database.
@@ -70,7 +68,7 @@ public class AddBookController extends HttpServlet {
             List<String> errors = bookService.validateBook(formData.title, formData.author, formData.date, formData.synopsis);
 
             if (!errors.isEmpty()) {
-                // If errors are present in the response, show the form again with the errors included
+                // If errors are present in the response, show the form again with the errors
                 request.setAttribute("errors", errors);
                 request.setAttribute("title", formData.title);
                 request.setAttribute("author", formData.author);

@@ -1,9 +1,12 @@
 package jbailey.stu.mmu.bigbook.rest.format;
 
+// Internal Imports
 import jbailey.stu.mmu.bigbook.rest.serialize.*;
 import jbailey.stu.mmu.bigbook.rest.serialize.json.JsonSerializer;
 import jbailey.stu.mmu.bigbook.rest.serialize.xml.XmlSerializer;
 import jbailey.stu.mmu.bigbook.rest.serialize.yaml.YamlSerializer;
+
+// External Imports
 import lombok.extern.slf4j.Slf4j;
 
 // todo: we could move this to a more DI focussed class. Should we really have a case at the end, for example?

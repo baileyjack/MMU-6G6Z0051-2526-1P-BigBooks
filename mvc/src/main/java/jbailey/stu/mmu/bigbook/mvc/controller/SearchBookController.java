@@ -1,18 +1,22 @@
 package jbailey.stu.mmu.bigbook.mvc.controller;
 
+// Internal Imports
+import jbailey.stu.mmu.bigbook.commons.service.ServicePort;
+import jbailey.stu.mmu.bigbook.commons.model.Book;
+import jbailey.stu.mmu.bigbook.commons.service.BookService;
+import jbailey.stu.mmu.bigbook.mvc.util.MVCErrorUtility;
+
+// Exetnerl aimports
+import lombok.extern.slf4j.Slf4j;
+
+// Java Imports
+import java.io.IOException;
+import java.util.List;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jbailey.stu.mmu.bigbook.commons.service.ServicePort;
-import jbailey.stu.mmu.bigbook.commons.model.Book;
-import jbailey.stu.mmu.bigbook.commons.service.BookService;
-import jbailey.stu.mmu.bigbook.mvc.util.MVCErrorUtility;
-import lombok.extern.slf4j.Slf4j;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Controller for searching books by title or author with pagination.

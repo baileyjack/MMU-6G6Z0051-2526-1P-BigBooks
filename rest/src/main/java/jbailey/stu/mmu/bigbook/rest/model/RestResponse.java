@@ -1,14 +1,10 @@
 package jbailey.stu.mmu.bigbook.rest.model;
 
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlAnyElement;
+// External Imports
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import jakarta.xml.bind.annotation.XmlRootElement;
-
 /**
  * Standard REST API response wrapper.
  * 

@@ -1,26 +1,23 @@
 package jbailey.stu.mmu.bigbook.mvc.controller;
 
-// Jakarta Servlet imports
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-// DI and Service layer
 import jbailey.stu.mmu.bigbook.commons.service.ServicePort;
 import jbailey.stu.mmu.bigbook.commons.model.Book;
 import jbailey.stu.mmu.bigbook.commons.service.BookService;
 import jbailey.stu.mmu.bigbook.commons.util.DateUtility;
-
-// Logging
 import jbailey.stu.mmu.bigbook.mvc.util.MVCErrorUtility;
+
+// External Imports
 import lombok.extern.slf4j.Slf4j;
 
 // Java
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Controller for editing an existing book.

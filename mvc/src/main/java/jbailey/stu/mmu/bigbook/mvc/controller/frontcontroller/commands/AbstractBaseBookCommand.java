@@ -1,5 +1,6 @@
 package jbailey.stu.mmu.bigbook.mvc.controller.frontcontroller.commands;
 
+// Internal Imports
 import jbailey.stu.mmu.bigbook.mvc.controller.frontcontroller.CommandResult;
 import jbailey.stu.mmu.bigbook.commons.service.BookService;
 
@@ -29,8 +30,8 @@ AbstractBaseBookCommand {
         }
         try {
             return Math.max(Integer.parseInt(stringToParse.trim()), 0);
-        } catch (NumberFormatException ex) {
-            // Where an exception occurs, always return default
+        } catch (NumberFormatException numberFormatException) {
+            // Where an exception occurs, return default
             return defaultValue;
         }
     }
@@ -49,7 +50,7 @@ AbstractBaseBookCommand {
         try {
             int parsed = Integer.parseInt(stringToParse.trim());
             return parsed > 0 ? parsed : defaultValue;
-        } catch (NumberFormatException ex) {
+        } catch (NumberFormatException numberFormatException) {
             return defaultValue;
         }
     }
@@ -62,12 +63,12 @@ AbstractBaseBookCommand {
      * */
     protected int requireId(String stringToParse) {
         if (stringToParse == null || stringToParse.trim().isEmpty()) {
-            throw new IllegalArgumentException("Missing ID");
+            throw new IllegalArgumentException("Missing a Book ID");
         }
         try {
             return Integer.parseInt(stringToParse.trim());
-        } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Invalid ID", ex);
+        } catch (NumberFormatException numebrFormatException) {
+            throw new IllegalArgumentException("Invalid Book ID", numebrFormatException);
         }
     }
 

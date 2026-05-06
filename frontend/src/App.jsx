@@ -1,131 +1,131 @@
-// src/App.jsx
-// Main app: loads all books, client-side pagination/search, visible API errors, and viewport-aware detail panel.
-
-import { useEffect, useState, useMemo } from "react";
-import {
-    fetchAllBooks,
-    fetchBookById,
-    createBook,
-    updateBook,
-    deleteBook,
-} from "./apiClient";
-
+import {useEffect, useState, useMemo, Component} from "react";
+import {fetchAllBooks, fetchBookById, createBook, updateBook, deleteBook,} from "./apiClient";
 import HeaderBar from "./components/HeaderBar";
 import BookTable from "./components/BookTable";
 import BookDetailPanel from "./components/BookDetailPanel";
-import BookFormModal from "./components/BookFormModal";
+import BookForm from "./components/BookForm.jsx";
 
-function setCookie(name, value, days = 365) {
-    const expires = new Date(Date.now() + days * 864e5).toUTCString();
-    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+function setCookie(cookieName, value, livenessDays = 365) {
+    const expires = new Date(Date.now() + livenessDays * 864e5).toUTCString();
+    document.cookie = `${cookieName}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
 }
-function getCookie(name) {
+
+/**
+ * Would you like a cookie? :)
+ * @param cookiedName
+ * @returns {string}
+ */
+function getCookie(cookiedName) {
     return document.cookie.split("; ").reduce((r, v) => {
         const parts = v.split("=");
-        return parts[0] === name ? decodeURIComponent(parts.slice(1).join("=")) : r;
+        return parts[0] === cookiedName ? decodeURIComponent(parts.slice(1).join("=")) : r;
     }, "");
 }
 
 export default function App() {
     const [allBooks, setAllBooks] = useState(null);
     const [isLoadingAll, setIsLoadingAll] = useState(false);
-    const [loadError, setLoadError] = useState(null);
+    const [loadingError, setLoadingError] = useState(null);
 
-    const [page, setPage] = useState(0);
-    const [size, setSize] = useState(50);
+    const [pageNumber, setPageNumber] = useState(0);
+    const [pageSize, setPageSize] = useState(50);
     const [total, setTotal] = useState(0);
 
     const [selectedBook, setSelectedBook] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalMode, setModalMode] = useState("create");
-
-    const [requestType, setRequestType] = useState(() => getCookie("requestType") || "json");
-    const [responseType, setResponseType] = useState(() => getCookie("responseType") || "json");
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [formMode, setFormMode] = useState("create");
+    const [HTTPRequestType, setHTTPRequestType] = useState(() => getCookie("requestType") || "json");
+    const [HTTPResponseType, setHTTPResponseType] = useState(() => getCookie("responseType") || "json");
 
     const [searchQuery, setSearchQuery] = useState("");
-    const [sortMode, setSortMode] = useState("none");
+    const [sortByMode, setSortByMode] = useState("none");
 
     // visible API errors
     const [apiErrors, setApiErrors] = useState([]);
-    const pushApiError = (err, title = "API Error") => {
-        const id = Date.now() + Math.random();
-        const message = err?.message || (err?.response && JSON.stringify(err.response)) || "Unknown error";
-        const details = err?.response ?? null;
-        setApiErrors((s) => [{ id, title, message, details }, ...s]);
-        console.error("[API ERROR]", title, err);
+    const pushApiError = (apiError, title = "API Error") => {
+        const errorID = Date.now() + Math.random();
+        const errorMessage = apiError?.message || (apiError?.response && JSON.stringify(apiError.response)) || "Unknown error";
+        const errorDetails = apiError?.response ?? null;
+        setApiErrors((errorStr) => [{ id: errorID, title, message: errorMessage, details: errorDetails }, ...errorStr]);
+        console.error("[API ERROR]", title, apiError);
     };
-    const dismissApiError = (id) => setApiErrors((s) => s.filter((x) => x.id !== id));
+    const dismissApiError = (id) => setApiErrors((errorStr) => errorStr.filter((errorStringFilterVal) => errorStringFilterVal.id !== id));
 
-    useEffect(() => setCookie("requestType", requestType), [requestType]);
-    useEffect(() => setCookie("responseType", responseType), [responseType]);
+    useEffect(() => setCookie("requestType", HTTPRequestType), [HTTPRequestType]);
+    useEffect(() => setCookie("responseType", HTTPResponseType), [HTTPResponseType]);
 
     useEffect(() => {
-        let mounted = true;
+        let mountedValues = true;
         (async () => {
             try {
-                setLoadError(null);
+                setLoadingError(null);
                 setIsLoadingAll(true);
-                const items = await fetchAllBooks(responseType, "");
-                if (!mounted) return;
+                const items = await fetchAllBooks(HTTPResponseType);
+                if (!mountedValues) return;
                 setAllBooks(Array.isArray(items) ? items : []);
                 setTotal(Array.isArray(items) ? items.length : 0);
-                setPage(0);
-            } catch (e) {
-                if (!mounted) return;
+                setPageNumber(0);
+            } catch (exception) {
+                if (!mountedValues) return;
                 setAllBooks([]);
                 setTotal(0);
-                setLoadError("Failed to load books");
-                pushApiError(e, "Failed to load books");
+                setLoadingError("Failed to load books");
+                pushApiError(exception, "Failed to load books");
             } finally {
-                if (!mounted) return;
+                if (!mountedValues) return;
                 setIsLoadingAll(false);
             }
         })();
-        return () => { mounted = false; };
-    }, [responseType]);
+        return () => { mountedValues = false; };
+    }, [HTTPResponseType]);
 
-    const processedBooks = useMemo(() => {
-        const base = Array.isArray(allBooks) ? allBooks : [];
-        const q = (searchQuery || "").trim().toLowerCase();
-        const searched = q
-            ? base.filter((b) => {
-                const title = (b?.title || "").toString().toLowerCase();
-                const author = (b?.author || "").toString().toLowerCase();
-                return title.includes(q) || author.includes(q);
-            })
-            : base;
+    const processedBooks = useMemo(class extends Component {
+        render() {
+            const base = Array.isArray(allBooks) ? allBooks : [];
+            const searchQueryLowerase = (searchQuery || "").trim().toLowerCase();
+            const searched = searchQueryLowerase
+                ? base.filter((book) => {
+                    const title = (book?.title || "").toString().toLowerCase();
+                    const author = (book?.author || "").toString().toLowerCase();
+                    return title.includes(searchQueryLowerase) || author.includes(searchQueryLowerase);
+                }) : base;
+            if (sortByMode === "none") return searched;
 
-        if (sortMode === "none") return searched;
+            return [...searched].sort((a, b) => {
+                const aTitle = (a?.title || "").toString();
+                const bTitle = (b?.title || "").toString();
+                const aDate = a?.date ? new Date(a.date) : new Date(0);
+                const bDate = b?.date ? new Date(b.date) : new Date(0);
 
-        return [...searched].sort((a, b) => {
-            const aTitle = (a?.title || "").toString();
-            const bTitle = (b?.title || "").toString();
-            const aDate = a?.date ? new Date(a.date) : new Date(0);
-            const bDate = b?.date ? new Date(b.date) : new Date(0);
-
-            switch (sortMode) {
-                case "title-asc": return aTitle.localeCompare(bTitle);
-                case "title-desc": return bTitle.localeCompare(aTitle);
-                case "date-asc": return aDate - bDate;
-                case "date-desc": return bDate - aDate;
-                default: return 0;
-            }
-        });
-    }, [allBooks, searchQuery, sortMode]);
+                switch (sortByMode) {
+                    case "title-asc":
+                        return aTitle.localeCompare(bTitle);
+                    case "title-desc":
+                        return bTitle.localeCompare(aTitle);
+                    case "date-asc":
+                        return aDate - bDate;
+                    case "date-desc":
+                        return bDate - aDate;
+                    default:
+                        return 0;
+                }
+            });
+        }
+    }, [allBooks, searchQuery, sortByMode]);
 
     useEffect(() => {
         setTotal(processedBooks.length);
-        const totalPages = Math.max(1, Math.ceil(processedBooks.length / size));
-        if (page >= totalPages) setPage(0);
-    }, [processedBooks, size]);
+        const totalPages = Math.max(1, Math.ceil(processedBooks.length / pageSize));
+        if (pageNumber >= totalPages) setPageNumber(0);
+    }, [processedBooks, pageSize]);
 
-    const pagedBooks = useMemo(() => {
-        const start = page * size;
-        return processedBooks.slice(start, start + size);
-    }, [processedBooks, page, size]);
+    const paginatedBooks = useMemo(() => {
+        const start = pageNumber * pageSize;
+        return processedBooks.slice(start, start + pageSize);
+    }, [processedBooks, pageNumber, pageSize]);
 
-    const handleSizeChange = (newSize) => { setSize(newSize); setPage(0); };
-    const handleSearchChange = (v) => { setSearchQuery(v); setPage(0); };
+    const handleSizeChange = (newSize) => { setPageSize(newSize); setPageNumber(0); };
+    const handleSearchChange = (v) => { setSearchQuery(v); setPageNumber(0); };
 
     const handleSelectBook = async (book) => {
         if (!book) return;
@@ -135,66 +135,66 @@ export default function App() {
             return;
         }
         try {
-            const full = await fetchBookById(book.id, responseType);
+            const full = await fetchBookById(book.id, HTTPResponseType);
             setSelectedBook(full);
-        } catch (e) {
-            pushApiError(e, "Failed to fetch book details");
+        } catch (ecception) {
+            pushApiError(ecception, "Failed to fetch book");
             setSelectedBook(book);
         }
     };
 
     const handleOpenEdit = async (bookId) => {
         try {
-            const full = await fetchBookById(bookId, responseType);
+            const full = await fetchBookById(bookId, HTTPResponseType);
             setSelectedBook(full);
-            setModalMode("edit");
-            setIsModalOpen(true);
-        } catch (e) {
-            pushApiError(e, "Failed to load book for editing");
+            setFormMode("edit");
+            setIsFormOpen(true);
+        } catch (exception) {
+            pushApiError(exception, "Failed to load book for editing");
             console.log("Failed to load book for editing");
         }
     };
 
     const handleCreateBook = async (book) => {
         try {
-            await createBook(book, requestType, responseType);
+            await createBook(book, HTTPRequestType, HTTPResponseType);
             setIsLoadingAll(true);
-            const items = await fetchAllBooks(responseType, "");
+            const items = await fetchAllBooks(HTTPResponseType);
             setAllBooks(Array.isArray(items) ? items : []);
             setIsLoadingAll(false);
-            setIsModalOpen(false);
-        } catch (e) {
-            pushApiError(e, "Failed to create book");
+            setIsFormOpen(false);
+        } catch (exception) {
+            pushApiError(exception, "Failed to create book");
             console.log("Failed to create book");
         }
     };
 
     const handleUpdateBook = async (book) => {
         try {
-            console.log("[App] Updating book payload:", book, "requestType:", requestType, "responseType:", responseType);
-            await updateBook(book, requestType, responseType);
-            setIsModalOpen(false);
+            console.log("[App] Updating book payload:", book, "requestType:", HTTPRequestType, "responseType:", HTTPResponseType);
+            await updateBook(book, HTTPRequestType, HTTPResponseType);
+            setIsFormOpen(false);
             setSelectedBook(null);
             setIsLoadingAll(true);
-            const items = await fetchAllBooks(responseType, "");
+            const items = await fetchAllBooks(HTTPResponseType);
             setAllBooks(Array.isArray(items) ? items : []);
             setIsLoadingAll(false);
-        } catch (e) {
-            pushApiError(e, "Failed to update book");
+        } catch (exception) {
+            pushApiError(exception, "Failed to update book");
             console.log("Failed to update book");
         }
     };
 
     const handleDeleteBook = async (id) => {
         try {
-            await deleteBook(id, responseType);
+            await deleteBook(id, HTTPResponseType);
             setSelectedBook(null);
             setIsLoadingAll(true);
-            const items = await fetchAllBooks(responseType, "");
+            const items = await fetchAllBooks(HTTPResponseType);
             setAllBooks(Array.isArray(items) ? items : []);
             setIsLoadingAll(false);
-        } catch (e) {
-            pushApiError(e, "Failed to delete book");
+        } catch (exception) {
+            pushApiError(exception, "Failed to delete book");
             console.log("Failed to delete book");
         }
     };
@@ -204,16 +204,15 @@ export default function App() {
             <HeaderBar
                 searchQuery={searchQuery}
                 onSearchChange={handleSearchChange}
-                requestType={requestType}
-                responseType={responseType}
-                onRequestTypeChange={(t) => setRequestType(t)}
-                onResponseTypeChange={(t) => setResponseType(t)}
-                onAddBook={() => { setModalMode("create"); setIsModalOpen(true); }}
-                sortMode={sortMode}
-                onSortChange={setSortMode}
+                requestType={HTTPRequestType}
+                responseType={HTTPResponseType}
+                onRequestTypeChange={(t) => setHTTPRequestType(t)}
+                onResponseTypeChange={(t) => setHTTPResponseType(t)}
+                onAddBook={() => { setFormMode("create"); setIsFormOpen(true); }}
+                sortMode={sortByMode}
+                onSortChange={setSortByMode}
             />
 
-            {/* Floating API error list */}
             <div style={{
                 position: "fixed",
                 top: "calc(var(--header-height) + 12px)",
@@ -221,8 +220,8 @@ export default function App() {
                 zIndex: 1200,
                 maxWidth: "420px",
             }}>
-                {apiErrors.map((err) => (
-                    <div key={err.id} style={{
+                {apiErrors.map((apiError) => (
+                    <div key={apiError.id} style={{
                         background: "#fff7f7",
                         border: "1px solid #fecaca",
                         color: "#7f1d1d",
@@ -233,56 +232,50 @@ export default function App() {
                         fontSize: "0.95rem",
                     }}>
                         <div style={{ display: "flex", justifyContent: "space-between", gap: "0.5rem" }}>
-                            <strong>{err.title}</strong>
-                            <button onClick={() => dismissApiError(err.id)} style={{
+                            <strong>{apiError.title}</strong>
+                            <button onClick={() => dismissApiError(apiError.id)} style={{
                                 border: "none",
                                 background: "transparent",
                                 cursor: "pointer",
                                 color: "#7f1d1d",
                                 fontWeight: 700,
-                            }}>✕</button>
+                            }}>x</button>
                         </div>
-                        <div style={{ marginTop: "0.45rem", color: "#4b1f1f" }}>{err.message}</div>
-                        {err.details && typeof err.details === "object" && (
+                        <div style={{ marginTop: "0.45rem", color: "#4b1f1f" }}>{apiError.message}</div>
+                        {apiError.details && typeof apiError.details === "object" && (
                             <details style={{ marginTop: "0.5rem", color: "#6b7280" }}>
                                 <summary style={{ cursor: "pointer" }}>Details</summary>
                                 <pre style={{ whiteSpace: "pre-wrap", fontSize: "0.85rem" }}>
-                  {JSON.stringify(err.details, null, 2)}
-                </pre>
-                            </details>
-                        )}
+                  {JSON.stringify(apiError.details, null, 2)}
+                </pre></details>)}
                     </div>
                 ))}
             </div>
 
-            {loadError && <div style={{ color: "red", marginBottom: "1rem" }}>{loadError}</div>}
-
+            {loadingError && <div style={{ color: "red", marginBottom: "1rem" }}>{loadingError}</div>}
             {isLoadingAll && <div style={{ margin: "0.5rem 0", color: "#374151" }}>Loading all books...</div>}
 
             <BookTable
-                books={pagedBooks}
-                page={page}
-                size={size}
+                books={paginatedBooks}
+                page={pageNumber}
+                size={pageSize}
                 total={total}
-                onPageChange={setPage}
+                onPageChange={setPageNumber}
                 onSizeChange={handleSizeChange}
-                onSelectBook={handleSelectBook}
-            />
+                onSelectBook={handleSelectBook}/>
 
             <BookDetailPanel
                 book={selectedBook}
                 onClose={() => setSelectedBook(null)}
                 onEdit={(id) => { if (id != null) handleOpenEdit(id); }}
-                onDelete={(id) => { console.log("[App] onDelete called with id:", id); if (id != null) handleDeleteBook(id); }}
-            />
+                onDelete={(id) => { console.log("[App] onDelete called with id:", id); if (id != null) handleDeleteBook(id); }}/>
 
-            {isModalOpen && (
-                <BookFormModal
-                    mode={modalMode}
-                    book={modalMode === "edit" ? selectedBook : null}
-                    onClose={() => setIsModalOpen(false)}
-                    onSubmit={modalMode === "edit" ? handleUpdateBook : handleCreateBook}
-                />
+            {isFormOpen && (
+                <BookForm
+                    mode={formMode}
+                    book={formMode === "edit" ? selectedBook : null}
+                    onClose={() => setIsFormOpen(false)}
+                    onSubmit={formMode === "edit" ? handleUpdateBook : handleCreateBook}/>
             )}
         </div>
     );

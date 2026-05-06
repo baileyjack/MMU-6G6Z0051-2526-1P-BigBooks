@@ -51,16 +51,16 @@
 <h1>Search Results</h1>
 
 <%
-    String searchQuery = (String) request.getAttribute("searchQuery");
+    String searchQueryString = (String) request.getAttribute("searchQuery");
 %>
 <div class="search-info">
-    <strong>Search Query:</strong> <%= searchQuery != null ? searchQuery : "N/A" %>
+    <strong>Query:</strong> <%= searchQueryString != null ? searchQueryString : "N/A" %>
 </div>
 
 <%
     request.setAttribute("pageSizeFormAction", request.getContextPath() + "/bigbookmvc/search");
     request.setAttribute("pageSizeHiddenFieldName", "search");
-    request.setAttribute("pageSizeHiddenFieldValue", searchQuery != null ? searchQuery : "");
+    request.setAttribute("pageSizeHiddenFieldValue", searchQueryString != null ? searchQueryString : "");
 %>
 <%@ include file="/WEB-INF/views/fragments/controls/pageSizeSelector.jspf" %>
 
@@ -68,8 +68,8 @@
     <%
         List<Book> books = (List<Book>) request.getAttribute("books");
         if (books != null && !books.isEmpty()) {
-            for (Book b : books) {
-                request.setAttribute("bookItem", b);
+            for (Book eachBook : books) {
+                request.setAttribute("bookItem", eachBook);
                 request.setAttribute("showBookActions", Boolean.TRUE);
     %>
     <%@ include file="/WEB-INF/views/fragments/cards/bookItem.jspf" %>
@@ -90,7 +90,7 @@
 
 <%
     request.setAttribute("paginationBasePath", "/bigbookmvc/search");
-    request.setAttribute("paginationQueryPrefix", "search=" + (searchQuery != null ? searchQuery : ""));
+    request.setAttribute("paginationQueryPrefix", "search=" + (searchQueryString != null ? searchQueryString : ""));
 %>
 <%@ include file="/WEB-INF/views/fragments/controls/pagination.jspf" %>
 
